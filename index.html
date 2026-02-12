@@ -1,0 +1,2856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Activation Module - Revised</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Brand Colors: Indigo & Violet Gradient Theme */
+    --primary: #4f46e5;
+    /* Indigo 600 */
+    --primary-dark: #4338ca;
+    /* Indigo 700 */
+    --primary-light: #e0e7ff;
+    /* Indigo 100 */
+    --primary-fade: rgba(79, 70, 229, 0.1);
+
+    --accent: #8b5cf6;
+    /* Violet 500 */
+
+    /* Functional Colors */
+    --success: #10b981;
+    --success-bg: #d1fae5;
+    --success-text: #065f46;
+
+    --warning: #f59e0b;
+    --warning-bg: #fff7ed;
+    --warning-text: #9a3412;
+
+    --danger: #ef4444;
+    --danger-bg: #fef2f2;
+    --danger-text: #991b1b;
+
+    /* Neutral Scale (Slate) */
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-hover: #f1f5f9;
+    --border-color: #e2e8f0;
+    --border-hover: #cbd5e1;
+
+    --text-main: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+
+    /* Shadows & Radius */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline-color: var(--primary);
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    color: var(--text-main);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+/* --- Header --- */
+.header {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+.header h1 {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+/* --- Layout --- */
+.main-layout {
+    animation: fadeIn var(--transition-normal);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+    /* Preserved from original, but maybe should be larger? sticking to original logic */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Components: Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    gap: 8px;
+    border: 1px solid transparent;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
+    filter: brightness(1.1);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    background: var(--text-muted);
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-muted);
+    background: var(--bg-hover);
+}
+
+.icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+    background: var(--bg-hover);
+    color: var(--primary);
+    border-color: var(--border-color);
+}
+
+/* --- Components: Cards --- */
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 24px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* --- Components: Forms --- */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.form-group .help-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+}
+
+.required {
+    color: var(--danger);
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-main);
+    background: white;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: var(--border-hover);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-fade);
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.input-group.three {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* --- Components: Tabs --- */
+.tabs {
+    display: flex;
+    gap: 8px;
+    padding: 4px;
+    background: var(--bg-hover);
+    border-radius: var(--radius-lg);
+    margin-bottom: 32px;
+    width: fit-content;
+    border: 1px solid var(--border-color);
+}
+
+.tab {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.tab:hover {
+    color: var(--text-main);
+}
+
+.tab.active {
+    background: white;
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* --- Components: Badges --- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+}
+
+/* --- Components: Timeline --- */
+.small-timeline {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.small-timeline::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 25%;
+    right: 25%;
+    height: 2px;
+    background: var(--border-color);
+    z-index: 0;
+}
+
+.small-timeline-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: transparent;
+}
+
+.small-step-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 0 0 4px var(--bg-body);
+}
+
+.small-timeline-step.active .small-step-dot {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 0 4px var(--primary-fade);
+}
+
+.small-timeline-step.completed .small-step-dot {
+    border-color: var(--success);
+    background: var(--success);
+    color: white;
+}
+
+.small-step-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.small-timeline-step.active .small-step-label {
+    color: var(--primary);
+}
+
+.small-timeline-step:hover .small-step-dot {
+    transform: scale(1.1);
+}
+
+/* --- Components: Survey Selector --- */
+.survey-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+}
+
+.survey-selector:hover {
+    border-color: var(--primary-light);
+}
+
+.survey-selector .survey-icon {
+    font-size: 24px;
+    background: var(--primary-light);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+}
+
+.survey-selector .survey-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+.survey-selector .survey-info p {
+    margin: 4px 0 0 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.survey-selector .change-btn {
+    margin-left: auto;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* --- Delivery Rule Styles (Merged & Refined) --- */
+.delivery-rule-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: white;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.delivery-rule-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.rule-header {
+    padding: 16px 24px;
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.channel-row {
+    display: grid;
+    grid-template-columns: 40px 2fr 30px 2fr 3fr 40px;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--bg-hover);
+    background: white;
+    transition: background 0.2s;
+}
+
+.channel-row-wrapper {
+    position: relative;
+}
+
+.channel-icon {
+    font-size: 20px;
+    text-align: center;
+}
+
+.compact-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.compact-select,
+.compact-input {
+    font-size: 13px;
+    padding: 6px 10px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    height: 34px;
+}
+
+.disabled-row {
+    opacity: 0.5;
+    background: var(--bg-body);
+    pointer-events: none;
+}
+
+/* Toggle Switch */
+.switch-sm {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.switch-sm input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-sm {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 20px;
+}
+
+.slider-sm:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+input:checked+.slider-sm {
+    background-color: var(--success);
+}
+
+input:checked+.slider-sm:before {
+    transform: translateX(16px);
+}
+
+.btn-override {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-override:hover {
+    border-color: var(--text-muted);
+    background: var(--bg-hover);
+}
+
+.btn-override.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+}
+
+/* --- Modals --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 32px;
+    border-radius: var(--radius-xl);
+    width: 90%;
+    max-width: 600px;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text-main);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+}
+
+.alert-info {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.alert-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+/* --- Table Styles --- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 24px;
+}
+
+th {
+    padding: 16px 24px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    position: sticky;
+    top: 0;
+}
+
+td {
+    padding: 20px 24px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--bg-hover);
+    color: var(--text-main);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover td {
+    background: var(--bg-hover);
+}
+/* --- Conditions Component --- */
+.condition-group {
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    background: var(--bg-hover);
+    margin-bottom: 16px;
+    transition: all 0.2s;
+}
+
+.condition-group:hover {
+    border-color: var(--primary-light);
+    background: white;
+}
+
+.condition-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.condition-group-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.condition-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.condition-row:last-child { margin-bottom: 0; }
+
+.remove-btn {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+
+.remove-btn:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.add-condition-btn {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: white;
+    color: var(--primary);
+    border: 1px dashed var(--primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.15s;
+}
+
+.add-condition-btn:hover {
+    background: var(--primary-light);
+    border-style: solid;
+}
+
+/* --- Activation List Items --- */
+.activation-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    transition: all 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.activation-item:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.activation-item-info { flex: 1; }
+
+.activation-item-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.activation-item-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 16px;
+}
+
+.activation-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* --- Collapsible Sections --- */
+.collapsible-section {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    overflow: hidden;
+    background: white;
+}
+
+.collapsible-header {
+    background: white;
+    padding: 16px 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.collapsible-header:hover {
+    background: var(--bg-hover);
+}
+
+.collapsible-header.active {
+    background: var(--bg-hover);
+    color: var(--primary);
+    border-bottom-color: var(--border-color);
+}
+
+.collapsible-icon {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.collapsible-header.active .collapsible-icon {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+.collapsible-body {
+    display: none;
+    padding: 24px;
+    background: var(--bg-body);
+}
+
+.collapsible-header.active + .collapsible-body {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+
+/* --- Condition Builder (Advanced) --- */
+.condition-builder-trigger {
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+}
+
+.condition-builder-trigger:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.condition-builder-trigger.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 2px var(--primary-fade);
+}
+
+.condition-builder-panel {
+    display: none;
+    margin-top: 12px;
+    padding: 20px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    animation: fadeIn 0.2s ease;
+}
+
+.condition-builder-panel.open {
+    display: block;
+}
+
+.builder-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.builder-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.radio-group-modern {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-hover);
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.radio-group-modern label {
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    user-select: none;
+    margin: 0;
+}
+
+.radio-group-modern label:has(input:checked) {
+    background: white;
+    box-shadow: var(--shadow-sm);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.radio-group-modern input {
+    display: none;
+}
+
+
+/* --- Channel Mappings (Grid & Overrides) --- */
+.channel-mappings-container {
+    background: var(--bg-hover);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    overflow: hidden;
+}
+
+.channel-grid-header {
+    display: grid;
+    grid-template-columns: 40px 2fr 30px 2fr 3fr 40px;
+    gap: 16px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-body);
+}
+
+.channel-icon-emoji {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.channel-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.arrow-separator {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 14px;
+}
+
+.override-panel {
+    display: none;
+    padding: 20px 24px 24px 80px;
+    background: white;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px dashed var(--border-color);
+    animation: fadeIn 0.2s ease;
+}
+
+.override-panel.open {
+    display: block;
+}
+
+
+/* --- Refined Selects and Inputs --- */
+.compact-select,
+.compact-input {
+    font-size: 13px;
+    padding: 6px 30px 6px 12px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: white;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.compact-select:focus,
+.compact-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-fade);
+    outline: none;
+}
+
+.compact-input {
+    background-image: none;
+    padding-right: 12px;
+}
+
+/* --- Trigger Selection Cards --- */
+.trigger-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.trigger-option-card {
+    display: block;
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: white;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 100%;
+}
+
+.trigger-option-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Style when checkbox inside is checked */
+.trigger-option-card:has(input:checked) {
+    border-color: var(--primary);
+    background: #eef2ff; /* var(--primary-light) might be too strong */
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.trigger-option-card input[type="checkbox"] {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.trigger-content .trigger-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.trigger-content .trigger-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.trigger-content .trigger-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: block;
+}
+
+
+/* --- Multi-Select Dropdown --- */
+.multi-select-container {
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: white;
+    padding: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-height: 42px;
+    transition: all 0.2s;
+}
+
+.multi-select-container:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-fade);
+}
+
+.selected-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bg-tag-close {
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.bg-tag-close:hover {
+    opacity: 1;
+}
+
+.multi-select-search {
+    border: none;
+    outline: none;
+    padding: 6px;
+    flex: 1;
+    min-width: 120px;
+    font-size: 13px;
+    background: transparent;
+    box-shadow: none !important; /* Override default input shadow */
+}
+
+.multi-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 1px;
+    display: none;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+}
+
+.dropdown-item:hover {
+    background: var(--bg-hover);
+}
+
+.dropdown-item.selected {
+    background: var(--bg-hover);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.dropdown-item input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--primary);
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📊 Survey Activation Module</h1>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="showListView()">← Back to List</button>
+            <button class="btn btn-primary" onclick="showCreateEditView()">+ New Activation</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- List View -->
+        <div id="listView" class="main-layout">
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; gap: 16px; align-items: center;">
+                        <h2>Activations</h2>
+                        <span class="badge">12 Active</span>
+                    </div>
+                    <div class="header-actions">
+                        <div class="input-group" style="margin-bottom: 0; gap: 8px;">
+                             <input type="text" placeholder="Search..." style="width: 250px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modern Data Table -->
+                <div style="overflow-x: auto;">
+<table class="modern-table">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-gray);">
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">SURVEY & TRIGGER</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">CHANNEL</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">CONDITIONS</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">PRIORITY</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">STATUS</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px; text-align: right;">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-gray); transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                                <td style="padding: 16px 12px;">
+                                    <div style="font-weight: 600; color: var(--dark-gray);">Feedback WebForm Survey</div>
+                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: Queue (Sales)</div>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+                                        📧 Email
+                                    </span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <div style="display: flex; gap: 4px;">
+                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Queue: Sales</span>
+                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">+2 more</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P1</span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Active</span>
+                                </td>
+                                <td style="padding: 16px 12px; text-align: right;">
+                                    <button class="icon-btn" title="Edit">✏️</button>
+                                    <button class="icon-btn" title="Duplicate">📋</button>
+                                    <button class="icon-btn" title="Delete" style="color: var(--error-red);">🗑️</button>
+                                </td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px solid var(--border-gray); transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                                <td style="padding: 16px 12px;">
+                                    <div style="font-weight: 600; color: var(--dark-gray);">Voice Survey Prompt</div>
+                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: Queue (Support)</div>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+                                        ☎️ Voice
+                                    </span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <div style="display: flex; gap: 4px;">
+                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Queue: Support</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P2</span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Active</span>
+                                </td>
+                                <td style="padding: 16px 12px; text-align: right;">
+                                    <button class="icon-btn" title="Edit">✏️</button>
+                                    <button class="icon-btn" title="Duplicate">📋</button>
+                                    <button class="icon-btn" title="Delete" style="color: var(--error-red);">🗑️</button>
+                                </td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px solid var(--border-gray); transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                                <td style="padding: 16px 12px;">
+                                    <div style="font-weight: 600; color: var(--dark-gray);">WhatsApp Feedback</div>
+                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: API</div>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+                                        💬 WhatsApp
+                                    </span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="color: #9ca3af; font-size: 12px; font-style: italic;">No conditions</span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P3</span>
+                                </td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: #f3f4f6; color: #6b7280; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Inactive</span>
+                                </td>
+                                <td style="padding: 16px 12px; text-align: right;">
+                                    <button class="icon-btn" title="Edit">✏️</button>
+                                    <button class="icon-btn" title="Duplicate">📋</button>
+                                    <button class="icon-btn" title="Delete" style="color: var(--error-red);">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-gray);">
+                    <div style="font-size: 13px; color: #6b7280;">Showing 1-3 of 12</div>
+                    <div style="display: flex; gap: 4px;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px;">Previous</button>
+                        <button class="btn btn-primary" style="padding: 6px 12px;">1</button>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;">2</button>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;">3</button>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create/Edit View -->
+        <div id="createEditView" style="display: none;" class="main-layout">
+            <!-- Small Timeline -->
+            <div class="small-timeline">
+                <div class="small-timeline-step active" id="tl-step1" onclick="goToStep(1)">
+                    <div class="small-step-dot">1</div>
+                    <div class="small-step-label">Survey</div>
+                </div>
+                <div class="small-timeline-step" id="tl-step2" onclick="goToStep(2)">
+                    <div class="small-step-dot">2</div>
+                    <div class="small-step-label">Delivery</div>
+                </div>
+                 <div class="small-timeline-step" id="tl-step3" onclick="goToStep(3)">
+                    <div class="small-step-dot">3</div>
+                    <div class="small-step-label">Reminders</div>
+                </div>
+                <div class="small-timeline-step" id="tl-step4" onclick="goToStep(4)">
+                    <div class="small-step-dot">4</div>
+                    <div class="small-step-label">Review</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Survey & Activation Trigger -->
+            <div id="step1" class="card" style="display: block;">
+                <div class="card-header">
+                    <h2>Step 1: Survey & Activation Trigger</h2>
+                </div>
+
+                <div id="surveySelectionGroup" class="form-group" style="display: block;">
+                    <label>Survey <span class="required">*</span></label>
+                    <div class="survey-selector" id="surveyDisplay">
+                        <span class="survey-icon">📋</span>
+                        <div class="survey-info">
+                            <h3>No Survey Selected</h3>
+                            <p>Choose a survey to create activation</p>
+                        </div>
+                        <button class="change-btn" onclick="openSurveySelection()">Select Survey</button>
+                    </div>
+                </div>
+                
+                <div id="activationTriggerGroup" class="form-group" style="display: none;">
+                    <label style="margin-bottom: 12px; display: block;">Activation Triggers <span class="required">*</span> <span style="font-weight: normal; color: var(--text-secondary); font-size: 13px;">(Select at least one)</span></label>
+                    <div class="trigger-selection-grid">
+                        <!-- Option 1: Manual / API -->
+                        <label class="trigger-option-card">
+                            <input type="checkbox" name="activationTrigger" value="api" onchange="handleTriggerChange()" checked>
+                            <div class="trigger-content">
+                                <span class="trigger-icon">🔌</span>
+                                <span class="trigger-title">Manual / API Trigger</span>
+                                <span class="trigger-desc">Survey activation will only get invoked when triggered from any API endpoints.</span>
+                            </div>
+                        </label>
+                        
+                        <!-- Option 2: Queue Interaction -->
+                        <label class="trigger-option-card">
+                            <input type="checkbox" name="activationTrigger" value="queue" onchange="handleTriggerChange()">
+                            <div class="trigger-content">
+                                <span class="trigger-icon">👥</span>
+                                <span class="trigger-title">Queue Interaction</span>
+                                <span class="trigger-desc">Activation will be triggered automatically for interactions in selected queues.</span>
+                            </div>
+                        </label>
+
+                        <!-- Option 3: Non-ACD Interaction -->
+                        <label class="trigger-option-card">
+                            <input type="checkbox" name="activationTrigger" value="non_acd" onchange="handleTriggerChange()">
+                            <div class="trigger-content">
+                                <span class="trigger-icon">📞</span>
+                                <span class="trigger-title">Non-ACD Interaction</span>
+                                <span class="trigger-desc">Trigger activation for interactions happening in non-ACD setups.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="queueSelection" class="form-group" style="display: none; margin-top: 24px;">
+                    <label>Select Queue <span class="required">*</span></label>
+                     <div class="multi-select-container" onclick="toggleMultiSelectDropdown(event)">
+                        <!-- Selected tags will appear here -->
+                        <input type="text" class="multi-select-search" placeholder="Select queues..." onkeyup="filterMultiSelect(this)">
+                        
+                        <!-- Dropdown Options -->
+                        <div class="multi-select-dropdown" id="queueDropdown">
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="sales_queue" onchange="updateMultiSelect(this)"> Sales Queue
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="support_queue" onchange="updateMultiSelect(this)"> Support Queue
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="billing_queue" onchange="updateMultiSelect(this)"> Billing Queue
+                            </label>
+                             <label class="dropdown-item">
+                                <input type="checkbox" value="retention_queue" onchange="updateMultiSelect(this)"> Retention Queue
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="goToStep(2)" id="step1NextBtn" disabled>Next: Delivery Settings</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Delivery Settings -->
+            <div id="step2" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>Step 2: Delivery Settings</h2>
+                </div>
+
+                <!-- Content from old Tab 1: Delivery Settings -->
+                <div id="tab-delivery" class="tab-content active" style="display: block;">
+
+                    <div id="deliveryRulesContainer">
+                        <!-- Rule #1 -->
+                        <div class="delivery-rule-card" id="deliveryRule1">
+                            <div class="rule-header">
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <span style="font-weight: 700; color: #374151;">Delivery Rule #1</span>
+                                    <span class="badge" style="background: #e0e7ff; color: #3730a3; font-weight: 500;">Priority 1</span>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <button class="icon-btn" title="Collapse">_</button>
+                                    <button class="icon-btn" title="Delete" onclick="removeDeliveryRule(this)" style="color: var(--error-red);">🗑️</button>
+                                </div>
+                            </div>
+
+                            <!-- Shared Conditions & Schedule -->
+                            <div style="padding: 24px; background: white; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 32px;">
+                                    <!-- Condition Builder Section -->
+                                    <div style="flex: 1; border-right: 1px solid var(--border-color); padding-right: 32px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                            <label class="compact-label" style="font-size: 12px; color: var(--text-main);">Rule Conditions</label>
+                                            <span style="font-size: 11px; color: var(--text-secondary); background: var(--bg-body); padding: 4px 8px; border-radius: 4px;">Rule applies only if satisfied</span>
+                                        </div>
+                                        
+                                        <div id="conditionBuilder1" class="condition-builder-trigger" onclick="toggleConditions(this)" style="background: var(--bg-body); border-style: solid; border-color: var(--border-color);">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                                <span style="font-size: 13px; color: var(--text-main); font-weight: 500;">All Interactions (Default)</span>
+                                                <span style="font-size: 11px; background: white; color: var(--primary); padding: 4px 8px; border-radius: var(--radius-sm); font-weight: 600; border: 1px solid var(--border-color);">+ Add Condition</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Builder Panel -->
+                                        <div class="condition-builder-panel">
+                                            <div class="builder-header">Configure Conditions</div>
+                                            <div class="builder-controls">
+                                                <select class="compact-select" onchange="updateConditionInputs(this)" style="max-width: 200px;">
+                                                    <option value="">+ Add Condition Type</option>
+                                                    <option value="participant_data">Participant Data</option>
+                                                    <option value="custom_attributes">Custom Attributes</option>
+                                                    <option value="queue_priority">Queue Priority</option>
+                                                    <option value="queue_waiting_time">Queue Waiting Time</option>
+                                                    <option value="interaction_handle_time">Interaction Handle Time</option>
+                                                    <option value="user">User</option>
+                                                    <option value="wrap_up_code">Wrap-up Code</option>
+                                                    <option value="direction">Direction</option>
+                                                    <option value="interaction_duration">Interaction Duration</option>
+                                                    <option value="transfer_count">Transfer Count</option>
+                                                    <option value="customer_segment">Customer Segment</option>
+                                                </select>
+                                            </div>
+                                            <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                                                <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="applyCondition(this)">Apply Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Schedule Section -->
+                                    <div style="flex: 1;">
+                                        <label class="compact-label" style="margin-bottom: 12px; display: block; font-size: 12px; color: var(--text-main);">Schedule Survey Delivery</label>
+                                        
+                                        <select class="compact-select" onchange="toggleScheduleOptions(this)" style="width: 100%; margin-bottom: 12px;">
+                                            <option value="immediate">Immediate</option>
+                                            <option value="delay">After Delay</option>
+                                            <option value="specific">Time Frame</option>
+                                        </select>
+
+                                        <!-- After Delay Config -->
+                                        <div id="sched_delay_options" style="display: none; padding: 12px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 13px; color: var(--text-secondary);">Send after</span>
+                                                <input type="number" class="compact-input" style="width: 80px;" placeholder="30">
+                                                <select class="compact-select" style="width: 100px;">
+                                                    <option value="minutes">Minutes</option>
+                                                    <option value="hours">Hours</option>
+                                                    <option value="days">Days</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Time Frame Config -->
+                                        <div id="sched_time_options" style="display: none; padding: 12px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);">
+                                            <div style="margin-bottom: 12px;">
+                                                <label class="compact-label" style="margin-bottom: 6px;">Day Range <span style="font-weight: normal; color: var(--text-secondary);">(Optional)</span></label>
+                                                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
+                                                    <select class="compact-select">
+                                                        <option value="">Start Day</option>
+                                                        <option value="mon">Monday</option>
+                                                        <option value="tue">Tuesday</option>
+                                                        <option value="wed">Wednesday</option>
+                                                        <option value="thu">Thursday</option>
+                                                        <option value="fri">Friday</option>
+                                                        <option value="sat">Saturday</option>
+                                                        <option value="sun">Sunday</option>
+                                                    </select>
+                                                    <span style="font-size: 12px; color: var(--text-secondary);">to</span>
+                                                    <select class="compact-select">
+                                                        <option value="">End Day</option>
+                                                        <option value="mon">Monday</option>
+                                                        <option value="tue">Tuesday</option>
+                                                        <option value="wed">Wednesday</option>
+                                                        <option value="thu">Thursday</option>
+                                                        <option value="fri">Friday</option>
+                                                        <option value="sat">Saturday</option>
+                                                        <option value="sun">Sunday</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                 <label class="compact-label" style="margin-bottom: 6px;">Time Range <span style="font-weight: normal; color: var(--text-secondary);">(Optional)</span></label>
+                                                 <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
+                                                    <input type="time" class="compact-input">
+                                                    <span style="font-size: 12px; color: var(--text-secondary);">to</span>
+                                                    <input type="time" class="compact-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Channel Mappings Grid -->
+                            <div class="channel-mappings-container">
+                                <!-- Header Row -->
+                                <div class="channel-grid-header">
+                                    <div></div>
+                                    <div class="compact-label">Interaction Channel</div>
+                                    <div></div>
+                                    <div class="compact-label" style="flex: 2;">Delivery Channel</div>
+                                    <div class="compact-label">Actions</div>
+                                    <div class="compact-label">Active</div>
+                                </div>
+
+                                <!-- Email Row -->
+                                <div class="channel-row-wrapper">
+                                    <div class="channel-row">
+                                        <div class="channel-icon-emoji">📧</div>
+                                        <div class="channel-name">Email</div>
+                                        <div class="arrow-separator">➝</div>
+                                        <div style="flex: 2; display: flex; gap: 8px;">
+                                            <select class="compact-select" style="flex: 1;" onchange="checkPlatformIdReq(this, 'Email')">
+                                                <option value="Email" selected>Email</option>
+                                                <option value="WhatsApp">WhatsApp</option>
+                                                <option value="SMS">SMS</option>
+                                                <option value="Call">Call</option>
+                                                <option value="Custom API">Custom API</option>
+                                                <option value="Apple Business">Apple Business</option>
+                                            </select>
+                                            <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1;">
+                                        </div>
+                                        <div>
+                                            <button class="btn-override" onclick="toggleOverride(this)" style="width: 100%;">⚙️ Override Default Delivery Channel Config</button>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <label class="switch-sm">
+                                                <input type="checkbox" checked onchange="toggleRow(this)">
+                                                <span class="slider-sm"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- Override Panel -->
+                                    <div class="override-panel">
+                                        <div style="display: flex; gap: 24px;">
+                                            <div style="flex: 1;">
+                                                <label class="compact-label" style="margin-bottom: 4px;">Platform</label>
+                                                <select class="compact-select">
+                                                    <option>Select Platform</option>
+                                                    <option>Twilio</option>
+                                                    <option>Genesys Cloud</option>
+                                                </select>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <label class="compact-label" style="margin-bottom: 4px;">Specific Config</label>
+                                                <select class="compact-select">
+                                                    <option>Default Survey Config</option>
+                                                    <option>Marketing Template A</option>
+                                                    <option>Support Template B</option>
+                                                </select>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <label class="compact-label" style="margin-bottom: 4px;">Contact Attribute Key</label>
+                                                <div style="display: flex; gap: 8px;">
+                                                    <input type="text" class="compact-input contact-attr-input" value="feebak_customer_contact" disabled style="background: #f9fafb; color: #6b7280;">
+                                                    <button class="icon-btn" title="Override Default" onclick="enableInput(this)" style="border: 1px solid var(--border-color); border-radius: 4px; padding: 4px 8px;">✏️</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Voice Row -->
+                                <div class="channel-row-wrapper">
+                                    <div class="channel-row">
+                                        <div class="channel-icon-emoji">☎️</div>
+                                        <div class="channel-name">Voice</div>
+                                        <div class="arrow-separator">➝</div>
+                                        <div style="flex: 2; display: flex; gap: 8px;">
+                                            <select class="compact-select" style="flex: 1;" onchange="checkPlatformIdReq(this, 'Voice')">
+                                                <option value="Call" selected>Call</option>
+                                                <option value="WhatsApp">WhatsApp</option>
+                                                <option value="SMS">SMS</option>
+                                                <option value="Email">Email</option>
+                                                <option value="Custom API">Custom API</option>
+                                                <option value="Apple Business">Apple Business</option>
+                                            </select>
+                                            <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1;">
+                                        </div>
+                                        <div>
+                                            <button class="btn-override" onclick="toggleOverride(this)" style="width: 100%;">⚙️ Override Default Delivery Channel Config</button>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <label class="switch-sm">
+                                                <input type="checkbox" checked onchange="toggleRow(this)">
+                                                <span class="slider-sm"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="override-panel">
+                                         <div class="alert alert-info" style="padding: 8px; font-size: 11px; margin-bottom: 0;">No overrides configured. Inheriting global rule settings.</div>
+                                    </div>
+                                </div>
+
+                                <!-- SMS Row -->
+                                <div class="channel-row-wrapper">
+                                    <div class="channel-row">
+                                        <div class="channel-icon-emoji">📱</div>
+                                        <div class="channel-name">SMS</div>
+                                        <div class="arrow-separator">➝</div>
+                                        <div style="flex: 2; display: flex; gap: 8px;">
+                                            <select class="compact-select" style="flex: 1;" onchange="checkPlatformIdReq(this, 'SMS')">
+                                                <option value="SMS" selected>SMS</option>
+                                                <option value="WhatsApp">WhatsApp</option>
+                                                <option value="Call">Call</option>
+                                                <option value="Email">Email</option>
+                                                <option value="Custom API">Custom API</option>
+                                                <option value="Apple Business">Apple Business</option>
+                                            </select>
+                                            <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1;">
+                                        </div>
+                                        <div>
+                                            <button class="btn-override" onclick="toggleOverride(this)" style="width: 100%;">⚙️ Override Default Delivery Channel Config</button>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <label class="switch-sm">
+                                                <input type="checkbox" checked onchange="toggleRow(this)">
+                                                <span class="slider-sm"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" style="width: 100%; border: 1px dashed var(--primary-blue); background: #eff6ff; color: var(--primary-blue);" onclick="addDeliveryRule()">
+                        + Add Another Delivery Rule Group
+                    </button>
+                </div>
+
+                <!-- Step 2 Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Next: Reminder Settings</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Reminder Settings -->
+            <div id="step3" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>Step 3: Reminder Settings</h2>
+                </div>
+
+                <!-- Tab 2: Reminder Settings -->
+                <div id="tab-reminder" class="tab-content active" style="display: block;">
+                    <div class="alert alert-info" style="margin-bottom: 20px;">
+                        <span>ℹ️</span>
+                        <div><strong>Reminders:</strong> Configure automatic reminders for non-respondents.</div>
+                    </div>
+
+                    <div id="reminderRulesList">
+                        <!-- Empty State for Reminders -->
+                        <div style="text-align: center; color: #9ca3af; padding: 30px; border: 1px dashed var(--border-gray); border-radius: 6px; margin-bottom: 16px;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">⏰</div>
+                            <div>No reminder rules configured.</div>
+                            <div style="font-size: 12px;">Survey will be sent only once.</div>
+                        </div>
+                    </div>
+
+                    <button style="width: 100%; border: 1px dashed var(--primary-blue); color: var(--primary-blue); padding: 12px; background: #f0f9ff; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onclick="addReminderRule()">+ Add Reminder Rule</button>
+                </div>
+
+                <!-- Step 3 Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+                    <button class="btn btn-primary" onclick="goToStep(4)">Next: Review</button>
+                </div>
+            </div>
+
+
+            <!-- Step 4: Preview -->
+            <div id="step4" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>Step 4: Review & Save Activation</h2>
+                </div>
+
+                <div id="previewContent" style="margin-bottom: 20px;"></div>
+
+                <!-- Step 4 Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
+                    <button class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+                    <button class="btn btn-primary" onclick="saveActivation()">Save Activation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Survey Selection Modal -->
+    <div id="surveyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                📋 Select Survey
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Search surveys..." id="surveySearch" style="margin-bottom: 16px;">
+            </div>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <div style="padding: 12px; border: 1px solid var(--border-gray); border-radius: 6px; cursor: pointer; margin-bottom: 8px;" onclick="selectSurvey('Feedback Webform Survey 09092025140357', 'Email')">
+                    <div style="font-weight: 600;">Feedback Webform Survey 09092025140357</div>
+                    <div style="font-size: 12px; color: #6b7280;">Email • 23 activations</div>
+                </div>
+                <div style="padding: 12px; border: 1px solid var(--border-gray); border-radius: 6px; cursor: pointer; margin-bottom: 8px;" onclick="selectSurvey('Voice Survey Prompt', 'Voice')">
+                    <div style="font-weight: 600;">Voice Survey Prompt</div>
+                    <div style="font-size: 12px; color: #6b7280;">Voice • 15 activations</div>
+                </div>
+                <div style="padding: 12px; border: 1px solid var(--border-gray); border-radius: 6px; cursor: pointer; margin-bottom: 8px;" onclick="selectSurvey('All Channel Survey', 'Multi-channel')">
+                    <div style="font-weight: 600;">All Channel Survey</div>
+                    <div style="font-size: 12px; color: #6b7280;">Multi-channel • 8 activations</div>
+                </div>
+                <div style="padding: 12px; border: 1px solid var(--border-gray); border-radius: 6px; cursor: pointer; margin-bottom: 8px;" onclick="selectSurvey('Customer Satisfaction NPS', 'SMS')">
+                    <div style="font-weight: 600;">Customer Satisfaction NPS</div>
+                    <div style="font-size: 12px; color: #6b7280;">SMS • 5 activations</div>
+                </div>
+                <div style="padding: 12px; border: 1px solid var(--border-gray); border-radius: 6px; cursor: pointer;" onclick="selectSurvey('WhatsApp Feedback Survey', 'WhatsApp')">
+                    <div style="font-weight: 600;">WhatsApp Feedback Survey</div>
+                    <div style="font-size: 12px; color: #6b7280;">WhatsApp • 3 activations</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSurveyModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // View Management
+        function showListView() {
+            document.getElementById('listView').style.display = 'grid';
+            document.getElementById('createEditView').style.display = 'none';
+        }
+
+        function showCreateEditView() {
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('createEditView').style.display = 'grid';
+        }
+
+        // Survey Selection
+        function openSurveySelection() {
+            document.getElementById('surveyModal').classList.add('show');
+        }
+
+        function closeSurveyModal() {
+            document.getElementById('surveyModal').classList.remove('show');
+        }
+
+        function selectSurvey(surveyName, channel) {
+            document.getElementById('surveyDisplay').innerHTML = `
+                <span class="survey-icon">📋</span>
+                <div class="survey-info">
+                    <h3>${surveyName}</h3>
+                    <p>${channel} Channel</p>
+                </div>
+                <button class="change-btn" onclick="openSurveySelection()">Change</button>
+            `;
+            closeSurveyModal();
+            showCreateEditView();
+            
+            // Show trigger selection after survey is selected
+            document.getElementById('activationTriggerGroup').style.display = 'block';
+            validateStep1();
+        }
+
+        function handleTriggerChange() {
+            // Check specifically for the 'queue' checkbox state
+            const queueCheckbox = document.querySelector('input[name="activationTrigger"][value="queue"]');
+            const queueSelection = document.getElementById('queueSelection');
+            
+            if (queueCheckbox && queueCheckbox.checked) {
+                queueSelection.style.display = 'block';
+                // Animation for queue selection appearing
+                if (!queueSelection.classList.contains('animated')) {
+                     queueSelection.style.animation = 'fadeIn 0.3s ease';
+                     queueSelection.classList.add('animated');
+                }
+            } else {
+                queueSelection.style.display = 'none';
+            }
+            validateStep1();
+        }
+
+        function validateStep1() {
+            const hasTrigger = document.querySelectorAll('input[name="activationTrigger"]:checked').length > 0;
+            const hasSurvey = document.querySelector('#surveyDisplay h3') && document.querySelector('#surveyDisplay h3').innerText !== 'No Survey Selected';
+            const btn = document.getElementById('step1NextBtn');
+            
+            if (hasSurvey && hasTrigger) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        // Condition Management
+        function removeCondition(btn) {
+            btn.parentElement.remove();
+        }
+
+        function addCondition(btn) {
+            const conditionRow = document.createElement('div');
+            conditionRow.className = 'condition-row';
+            conditionRow.innerHTML = `
+                <select>
+                    <option value="">Select Condition Type</option>
+                    <option value="queue">Queue</option>
+                    <option value="routing">Routing Type</option>
+                    <option value="participant">Participant Data</option>
+                    <option value="custom">Custom Attributes</option>
+                </select>
+                <select>
+                    <option>Is</option>
+                    <option>Is Not</option>
+                    <option>Contains</option>
+                </select>
+                <input type="text" placeholder="Enter value">
+                <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+            `;
+            btn.parentElement.insertBefore(conditionRow, btn);
+        }
+
+        function addConditionGroup() {
+            const groupNumber = document.querySelectorAll('.condition-group').length + 1;
+            const conditionGroup = document.createElement('div');
+            conditionGroup.className = 'condition-group';
+            conditionGroup.innerHTML = `
+                <div class="condition-group-header">
+                    <span class="condition-group-title">Condition Group #${groupNumber}</span>
+                    <select style="width: auto;">
+                        <option>AND</option>
+                        <option>OR</option>
+                    </select>
+                </div>
+                <div class="condition-row">
+                    <select>
+                        <option value="">Select Condition Type</option>
+                        <option value="queue">Queue</option>
+                        <option value="routing">Routing Type</option>
+                        <option value="participant">Participant Data</option>
+                    </select>
+                    <select>
+                        <option>Is</option>
+                        <option>Is Not</option>
+                    </select>
+                    <input type="text" placeholder="Enter value">
+                    <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+                </div>
+                <button class="add-condition-btn" onclick="addCondition(this)">+ Add Condition</button>
+            `;
+            document.getElementById('activationConditions').appendChild(conditionGroup);
+        }
+
+        // --- Delivery Condition Logic ---
+
+        const DELIVERY_CONDITION_TYPES = {
+            'participant_data': { label: 'Participant Data', type: 'kv' },
+            'custom_attributes': { label: 'Custom Attributes', type: 'kv' },
+            'queue_priority': { label: 'Queue Priority', type: 'number' },
+            'queue_waiting_time': { label: 'Queue Waiting Time', type: 'number' },
+            'interaction_handle_time': { label: 'Interaction Handle Time', type: 'number' },
+            'user': { label: 'User', type: 'multi', options: ['Agent 1', 'Agent 2', 'Support Team', 'Sales Team'] },
+            'wrap_up_code': { label: 'Wrap-up Code', type: 'select', options: ['Solved', 'Unresolved', 'Escalated', 'Sale Made'] },
+            'direction': { label: 'Direction', type: 'select', options: ['Inbound', 'Inbound Internal', 'Outbound'] },
+            'interaction_duration': { label: 'Interaction Duration', type: 'number' },
+            'transfer_count': { label: 'Transfer Count', type: 'number' },
+            'customer_segment': { label: 'Customer Segment', type: 'select', options: ['VIP', 'Standard', 'At Risk'] }
+        };
+
+        function getConditionOptions() {
+             return `<option value="">Select Condition Type</option>` + 
+                    Object.entries(DELIVERY_CONDITION_TYPES).map(([key, val]) => 
+                        `<option value="${key}">${val.label}</option>`
+                    ).join('');
+        }
+
+        function updateConditionInputs(select) {
+            const type = select.value;
+            const config = DELIVERY_CONDITION_TYPES[type];
+            
+            // Remove siblings between select and the last button (or end of container)
+            let next = select.nextElementSibling;
+            while (next && next.tagName !== 'BUTTON') {
+                const toRemove = next;
+                next = next.nextElementSibling;
+                toRemove.remove();
+            }
+            
+            if (!config) return;
+
+            let html = '';
+            const style = 'margin-right: 8px; margin-bottom: 0;';
+            const inputClass = 'compact-input';
+            const selectClass = 'compact-select';
+
+            if (config.type === 'kv') {
+                html = `
+                    <input type="text" class="${inputClass}" placeholder="Key" style="width: 110px; ${style}">
+                    <select class="${selectClass}" style="width: 90px; ${style}">
+                        <option>Equals</option>
+                        <option>Contains</option>
+                        <option>Not Equals</option>
+                    </select>
+                    <input type="text" class="${inputClass}" placeholder="Value" style="width: 110px; ${style}">
+                `;
+            } else if (config.type === 'number') {
+                html = `
+                    <select class="${selectClass}" style="width: 70px; ${style}">
+                        <option>></option>
+                        <option><</option>
+                        <option>=</option>
+                        <option>>=</option>
+                        <option><=</option>
+                    </select>
+                    <input type="number" class="${inputClass}" placeholder="0" style="width: 80px; ${style}">
+                `;
+            } else if (config.type === 'select') {
+                html = `
+                    <select class="${selectClass}" style="width: 70px; ${style}">
+                        <option>Is</option>
+                        <option>Is Not</option>
+                    </select>
+                    <select class="${selectClass}" style="width: 120px; ${style}">
+                         ${config.options.map(o => `<option>${o}</option>`).join('')}
+                    </select>
+                `;
+            } else if (config.type === 'multi') {
+                html = `
+                    <select class="${selectClass}" style="width: 90px; ${style}">
+                        <option>Includes</option>
+                        <option>Excludes</option>
+                    </select>
+                     <select class="${selectClass}" multiple style="width: 140px; height: 34px; ${style} vertical-align: middle;" title="Hold Ctrl/Cmd to select multiple">
+                         ${config.options.map(o => `<option>${o}</option>`).join('')}
+                    </select>
+                `;
+            }
+
+            select.insertAdjacentHTML('afterend', html);
+        }
+
+        function addDeliveryConditionGroup(btn) {
+            const groupNumber = document.querySelectorAll('.delivery-config .condition-group').length + 1;
+            const conditionGroup = document.createElement('div');
+            conditionGroup.className = 'condition-group';
+            conditionGroup.innerHTML = `
+                <div class="condition-group-header">
+                    <span class="condition-group-title">Condition Group #${groupNumber}</span>
+                    <select style="width: auto;">
+                        <option>AND</option>
+                        <option>OR</option>
+                    </select>
+                </div>
+                <div class="condition-row">
+                    <select onchange="updateConditionInputs(this)">
+                        ${getConditionOptions()}
+                    </select>
+                    <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+                </div>
+                <button class="add-condition-btn" onclick="addDeliveryCondition(this)">+ Add Condition</button>
+            `;
+            btn.parentElement.insertBefore(conditionGroup, btn);
+        }
+
+        function addDeliveryCondition(btn) {
+            const conditionRow = document.createElement('div');
+            conditionRow.className = 'condition-row';
+            conditionRow.innerHTML = `
+                <select onchange="updateConditionInputs(this)">
+                    ${getConditionOptions()}
+                </select>
+                <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+            `;
+            btn.parentElement.insertBefore(conditionRow, btn);
+        }
+
+        function addReminderConditionGroup(btn) {
+            const groupNumber = btn.closest('.reminder-rule').querySelectorAll('.condition-group').length + 1;
+            const conditionGroup = document.createElement('div');
+            conditionGroup.className = 'condition-group';
+            conditionGroup.innerHTML = `
+                <div class="condition-group-header">
+                    <span class="condition-group-title">Condition Group #${groupNumber}</span>
+                    <select style="width: auto;">
+                        <option>AND</option>
+                        <option>OR</option>
+                    </select>
+                </div>
+                <div class="condition-row">
+                    <select>
+                        <option value="">Select Condition Type</option>
+                        <option value="survey-state">Survey State</option>
+                        <option value="queue">Queue</option>
+                        <option value="interaction-type">Interaction Type</option>
+                        <option value="custom-attr">Custom Attributes</option>
+                    </select>
+                    <select>
+                        <option>Is</option>
+                        <option>Is Not</option>
+                        <option>Contains</option>
+                    </select>
+                    <input type="text" placeholder="Enter value">
+                    <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+                </div>
+                <button class="add-condition-btn" onclick="addReminderCondition(this)">+ Add Condition</button>
+            `;
+            btn.parentElement.insertBefore(conditionGroup, btn);
+        }
+
+        function addReminderCondition(btn) {
+            const conditionRow = document.createElement('div');
+            conditionRow.className = 'condition-row';
+            conditionRow.innerHTML = `
+                <select>
+                    <option value="">Select Condition Type</option>
+                    <option value="survey-state">Survey State</option>
+                    <option value="queue">Queue</option>
+                    <option value="interaction-type">Interaction Type</option>
+                    <option value="custom-attr">Custom Attributes</option>
+                </select>
+                <select>
+                    <option>Is</option>
+                    <option>Is Not</option>
+                    <option>Contains</option>
+                </select>
+                <input type="text" placeholder="Enter value">
+                <button class="remove-btn" onclick="removeCondition(this)">Remove</button>
+            `;
+            btn.parentElement.insertBefore(conditionRow, btn);
+        }
+
+        // Tab Management
+        function switchTab(tabId) {
+            console.log("Switching to tab:", tabId);
+            
+            // 1. Deactivate all tabs and content
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => {
+                c.classList.remove('active');
+                c.style.display = 'none'; // Fallback inline style
+            });
+
+            // 2. Activate specific tab button
+            const activeTabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
+            if (activeTabBtn) activeTabBtn.classList.add('active');
+
+            // 3. Activate specific tab content
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) {
+                activeContent.classList.add('active');
+                activeContent.style.display = 'block'; // Fallback inline style
+            }
+        }
+
+        // Conditions
+        function toggleCollapsible(header) {
+            header.classList.toggle('active');
+        }
+
+        // Delivery Rule Management
+        function addDeliveryRule() {
+            const container = document.getElementById('deliveryRulesContainer');
+            const ruleCount = container.querySelectorAll('.delivery-rule-card').length + 1;
+            
+            // Clone the first rule as template
+            const template = document.getElementById('deliveryRule1');
+            const newRule = template.cloneNode(true);
+            
+            newRule.id = `deliveryRule${ruleCount}`;
+            newRule.querySelector('.delivery-config-title, span[style*="font-weight: 700"]').innerText = `Delivery Rule #${ruleCount}`;
+            newRule.querySelector('.badge').innerText = `Priority ${ruleCount}`;
+            
+            // Update radio names so they don't conflict
+            newRule.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.name = `sched_rule${ruleCount}`;
+            });
+
+            container.appendChild(newRule);
+            updateBadge('deliveryCountBadge', `${ruleCount} Rules Configured`);
+        }
+
+        function removeDeliveryRule(btn) {
+            const card = btn.closest('.delivery-rule-card');
+            if (document.querySelectorAll('.delivery-rule-card').length > 1) {
+                card.remove();
+                
+                // Re-index remaining rules
+                const rules = document.querySelectorAll('.delivery-rule-card');
+                rules.forEach((rule, index) => {
+                    const num = index + 1;
+                    rule.id = `deliveryRule${num}`;
+                    rule.querySelector('span[style*="font-weight: 700"]').innerText = `Delivery Rule #${num}`;
+                    rule.querySelector('.badge').innerText = `Priority ${num}`;
+                });
+                updateBadge('deliveryCountBadge', `${rules.length} Rules Configured`);
+            }
+        }
+
+        function toggleRow(checkbox) {
+            const row = checkbox.closest('.channel-row');
+            const wrapper = checkbox.closest('.channel-row-wrapper'); // wrapper might have opacity too
+            
+            if (checkbox.checked) {
+                row.classList.remove('disabled-row');
+                row.querySelectorAll('select, input[type="text"], button').forEach(el => el.disabled = false);
+                if(wrapper) wrapper.style.opacity = '1';
+            } else {
+                row.classList.add('disabled-row');
+                row.querySelectorAll('select, input[type="text"], button').forEach(el => el.disabled = true);
+                 if(wrapper) wrapper.style.opacity = '0.6';
+            }
+        }
+
+        function toggleOverride(btn) {
+            btn.classList.toggle('active');
+            const wrapper = btn.closest('.channel-row-wrapper');
+            const panel = wrapper.querySelector('.override-panel');
+            
+            if (btn.classList.contains('active')) {
+                panel.style.display = 'block';
+                btn.innerHTML = '⚙️ Hide Overrides';
+                btn.style.background = '#eff6ff';
+            } else {
+                panel.style.display = 'none';
+                btn.innerHTML = '⚙️ Override Defaults';
+                btn.style.background = 'transparent';
+            }
+        }
+
+        function toggleConditions(element) {
+             // Handle both old and new structure
+             if (element.classList.contains('condition-builder-trigger')) {
+                 const panel = element.nextElementSibling;
+                 element.classList.toggle('active');
+                 panel.classList.toggle('open');
+             } else {
+                 // Fallback for old inline style elements if any
+                 const builderArea = element.nextElementSibling;
+                 if (builderArea.style.display === 'none') {
+                     builderArea.style.display = 'block';
+                     element.style.borderColor = 'var(--primary-blue)';
+                     element.style.background = '#eff6ff';
+                 } else {
+                     builderArea.style.display = 'none';
+                     element.style.borderColor = '#d1d5db';
+                     element.style.background = 'transparent';
+                 }
+             }
+        }
+
+        function applyCondition(btn) {
+             const builderPanel = btn.closest('.condition-builder-panel') || btn.parentElement;
+             const displayDiv = builderPanel.previousElementSibling;
+             
+             const select = builderPanel.querySelector('select');
+             const typeLabel = select.options[select.selectedIndex].text;
+             
+             if (select.value === "") {
+                 alert("Please select a condition type.");
+                 return;
+             }
+
+             let values = [];
+             // Iterate over inputs/selects in the controls div
+             const controlsContainer = builderPanel.querySelector('.builder-controls') || builderPanel;
+             let next = select.nextElementSibling;
+             
+             while(next && next.tagName !== 'BUTTON') {
+                 if (next.tagName === 'INPUT') {
+                     values.push(next.value || '""');
+                 } else if (next.tagName === 'SELECT') {
+                     if (next.multiple) {
+                         const selected = Array.from(next.selectedOptions).map(o => o.text);
+                         values.push(selected.length ? `[${selected.join(', ')}]` : '[Any]');
+                     } else {
+                          values.push(next.value);
+                     }
+                 }
+                 next = next.nextElementSibling;
+             }
+             
+             // Update display text
+             const primarySpan = displayDiv.querySelector('span:first-child');
+             if (primarySpan) {
+                 primarySpan.innerText = `${typeLabel} ${values.join(' ')}`;
+                 primarySpan.style.color = 'var(--text-main)';
+                 primarySpan.style.fontWeight = '600';
+             }
+             
+             // Close panel
+             if (builderPanel.classList.contains('condition-builder-panel')) {
+                 builderPanel.classList.remove('open');
+                 displayDiv.classList.remove('active');
+             } else {
+                 builderPanel.style.display = 'none';
+                 displayDiv.style.borderColor = '#d1d5db';
+                 displayDiv.style.background = 'transparent';
+             }
+        }
+
+        // Reminders
+        // Reminders
+        function addReminderRule() {
+            const container = document.getElementById('reminderRulesList');
+            // Remove empty state if present
+            if (container.firstElementChild && container.firstElementChild.innerText.includes('No reminder rules')) {
+                container.innerHTML = '';
+            }
+
+            const ruleNumber = container.querySelectorAll('.delivery-rule-card').length + 1;
+            
+            const rule = document.createElement('div');
+            rule.className = 'delivery-rule-card';
+            rule.innerHTML = `
+                <div class="rule-header">
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <span style="font-weight: 700; color: #374151;">Reminder Rule #${ruleNumber}</span>
+                        <span class="badge" style="background: #fef3c7; color: #92400e; font-weight: 500;">Retry</span>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                         <button class="icon-btn" title="Delete" onclick="removeReminderRule(this)" style="color: var(--error-red);">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- Conditions -->
+                <div style="padding: 16px; background: #fff; border-bottom: 1px solid var(--border-gray);">
+                    <label class="compact-label" style="margin-bottom: 6px; display: block;">Apply Reminder If (Conditions)</label>
+                    <div style="border: 1px dashed #d1d5db; border-radius: 4px; padding: 8px; min-height: 36px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="toggleConditions(this)">
+                        <span style="font-size: 13px; color: #6b7280;">Survey Not Completed (Default)</span>
+                        <span style="font-size: 10px; background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">+ Add Condition</span>
+                    </div>
+                    <!-- Hidden Builder (Reusing logic) -->
+                    <div class="condition-builder-area" style="display: none; margin-top: 12px; padding: 12px; background: #f9fafb; border: 1px solid var(--border-gray); border-radius: 4px;">
+                         <div style="font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 8px;">BUILD CONDITIONS</div>
+                         <select class="compact-select" style="margin-bottom: 8px;">
+                             <option>Survey Status</option>
+                             <option>Customer Attribute</option>
+                         </select>
+                         <div style="display: flex; gap: 8px;">
+                             <select class="compact-select"><option>Equals</option></select>
+                             <input type="text" class="compact-input" value="Partially Completed">
+                         </div>
+                         <button class="btn btn-primary" style="padding: 4px 12px; margin-top: 8px; font-size: 11px;" onclick="applyCondition(this)">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Action & Schedule -->
+                <div style="padding: 16px; background: #f9fafb; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label class="compact-label">Send Via Channel</label>
+                        <select class="compact-select">
+                            <option>Same as Original</option>
+                            <option>Email</option>
+                            <option>SMS</option>
+                            <option>WhatsApp</option>
+                        </select>
+                    </div>
+                    <div>
+                         <label class="compact-label">Wait Time (After Initial Send)</label>
+                         <div style="display: flex; gap: 8px;">
+                             <input type="number" class="compact-input" value="3" style="width: 60px;">
+                             <select class="compact-select" style="width: 80px;">
+                                 <option>Days</option>
+                                 <option>Hours</option>
+                             </select>
+                         </div>
+                    </div>
+                     <div>
+                        <label class="compact-label">Max Retries</label>
+                        <select class="compact-select">
+                            <option>1 Time</option>
+                            <option>2 Times</option>
+                            <option>3 Times</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(rule);
+        }
+
+        function removeReminderRule(btn) {
+            btn.closest('.delivery-rule-card').remove();
+             const container = document.getElementById('reminderRulesList');
+             if (container.children.length === 0) {
+                 container.innerHTML = `
+                    <div style="text-align: center; color: #9ca3af; padding: 30px; border: 1px dashed var(--border-gray); border-radius: 6px; margin-bottom: 16px;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">⏰</div>
+                        <div>No reminder rules configured.</div>
+                        <div style="font-size: 12px;">Survey will be sent only once.</div>
+                    </div>`;
+             }
+        }
+        
+        function updateBadge(id, text) {
+            const badge = document.getElementById(id);
+            if(badge) badge.innerText = text;
+        }
+
+        function toggleReminderChannelOverride(select) {
+            const container = select.closest('.reminder-config-card') || select.closest('.reminder-global-card');
+            const overridePanel = container.querySelector('.reminder-override-panel');
+            
+            if (select.value !== 'Same Channel') {
+                overridePanel.style.display = 'block';
+            } else {
+                overridePanel.style.display = 'none';
+            }
+        }
+
+        function initMultiSelect(container) {
+            const trigger = container.querySelector('.select-trigger');
+            const optionsPanel = container.querySelector('.select-options');
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            const triggerText = trigger.querySelector('span');
+            
+            trigger.onclick = function(e) {
+                e.stopPropagation();
+                const isOpen = optionsPanel.style.display === 'block';
+                // Close all other open dropdowns
+                document.querySelectorAll('.select-options').forEach(el => el.style.display = 'none');
+                optionsPanel.style.display = isOpen ? 'none' : 'block';
+            };
+
+            function updateText() {
+                const selected = Array.from(checkboxes).filter(c => c.checked).map(c => c.parentElement.textContent.trim());
+                triggerText.textContent = selected.length > 0 ? selected.join(', ') : 'Select Statuses...';
+            }
+            
+            checkboxes.forEach(cb => cb.addEventListener('change', updateText));
+            updateText();
+
+            // Close on click outside (this listener should ideally be added once globally, but for this prototype adding it here is okay or we rely on a global one)
+            // A better approach for prototype is a global listener that closes all .select-options not contained in the click target
+        }
+
+        // Global click listener to close dropdowns
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-multi-select')) {
+                document.querySelectorAll('.select-options').forEach(el => el.style.display = 'none');
+            }
+        });
+
+        // Reminder Management
+        function addReminderRule() {
+            const container = document.getElementById('reminderRulesList');
+            // Remove empty state if present
+            const emptyState = container.querySelector('div[style*="text-align: center"]');
+            if (emptyState) emptyState.remove();
+
+            const ruleNumber = container.querySelectorAll('.delivery-rule-card').length + 1;
+            const rule = document.createElement('div');
+            rule.className = 'delivery-rule-card reminder-rule';
+            rule.setAttribute('data-rule-id', Date.now());
+            
+            rule.innerHTML = `
+                <div class="rule-header">
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <span style="font-weight: 700; color: #374151;">Reminder Rule #${ruleNumber}</span>
+                    </div>
+                    <button class="icon-btn" onclick="removeReminderRule(this)" style="color: var(--error-red); width: auto; padding: 0 8px; font-size: 12px;">🗑️ Delete Rule</button>
+                </div>
+
+                <!-- Conditions Section -->
+                <div style="padding: 24px; background: white; border-bottom: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                         <label class="compact-label" style="display: block;">Trigger Conditions</label>
+                         <button class="btn btn-secondary" onclick="this.parentElement.parentElement.querySelector('.condition-builder-panel').style.display = 'block'" style="font-size: 11px; padding: 4px 8px;">
+                            + Configure Additional Conditions
+                        </button>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label class="compact-label" style="margin-bottom: 6px;">Who to send reminder (Survey State)</label>
+                        <div class="custom-multi-select" style="position: relative;">
+                            <div class="select-trigger" style="border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+                                <span>Select Statuses...</span>
+                                <span style="font-size: 10px;">▼</span>
+                            </div>
+                            <div class="select-options" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-top: none; z-index: 10; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                                <label style="display: flex; align-items: center; padding: 8px; cursor: pointer;">
+                                    <input type="checkbox" value="null" style="margin-right: 8px;"> Sent / No Status
+                                </label>
+                                <label style="display: flex; align-items: center; padding: 8px; cursor: pointer;">
+                                    <input type="checkbox" value="abandoned" checked style="margin-right: 8px;"> Abandoned
+                                </label>
+                                <label style="display: flex; align-items: center; padding: 8px; cursor: pointer;">
+                                    <input type="checkbox" value="partial" style="margin-right: 8px;"> Answered Partial
+                                </label>
+                                <label style="display: flex; align-items: center; padding: 8px; cursor: pointer;">
+                                    <input type="checkbox" value="active" style="margin-right: 8px;"> Active
+                                </label>
+                                <label style="display: flex; align-items: center; padding: 8px; cursor: pointer;">
+                                    <input type="checkbox" value="expired" style="margin-right: 8px;"> Expired
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Condition Panel -->
+                     <div class="condition-builder-panel" style="margin-top: 12px; display: none;">
+                        <div class="builder-header">Add Additional Conditions</div>
+                         <div class="builder-controls">
+                            <select class="compact-select" onchange="updateConditionInputs(this)" style="max-width: 200px;">
+                                <option value="">+ Add Condition Type</option>
+                                <option value="survey_status">Survey Status</option>
+                                <option value="days_since_send">Days Since First Send</option>
+                                <option value="custom_attributes">Custom Attributes</option>
+                                <option value="participant_data">Participant Data</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                            <button class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;" onclick="applyCondition(this)">Apply Changes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Retry Config -->
+                <div style="padding: 24px; background: #f9fafb;">
+                     <!-- Controls -->
+                     <div style="margin-bottom: 24px;">
+                        <label class="compact-label" style="margin-bottom: 12px; display: block;">Retry Strategy</label>
+                        <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 13px; color: var(--text-main);">Repeat survey up to</span>
+                                <select class="compact-select reminder-retry-count" onchange="updateReminderRetryConfig(this)" style="width: 80px;">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                </select>
+                                <span style="font-size: 13px; color: var(--text-main);">times</span>
+                            </div>
+
+                            <div style="height: 24px; width: 1px; border-left: 1px solid var(--border-color);"></div>
+
+                             <div class="radio-group-modern" style="display: inline-flex;">
+                                <label><input type="radio" name="reminderRetryMode_${ruleNumber}_${Date.now()}" value="apply-all" checked onchange="updateReminderRetryConfig(this)"> same settings for all</label>
+                                <label><input type="radio" name="reminderRetryMode_${ruleNumber}_${Date.now()}" value="per-retry" onchange="updateReminderRetryConfig(this)"> configure individually</label>
+                             </div>
+                        </div>
+                     </div>
+
+                     <!-- Dynamic Retry Blocks -->
+                     <div class="reminder-retry-config-sections" style="display: flex; flex-direction: column; gap: 16px;">
+                         <!-- Populated by JS -->
+                     </div>
+                </div>
+            `;
+
+            container.appendChild(rule);
+            
+            // Initialize Multi-Select for this rule
+            initMultiSelect(rule.querySelector('.custom-multi-select'));
+            
+            updateReminderRetryConfig(rule.querySelector('.reminder-retry-count'));
+        }
+
+        function removeReminderRule(btn) {
+            btn.closest('.reminder-rule').remove();
+             const container = document.getElementById('reminderRulesList');
+             if (container.children.length === 0) {
+                 container.innerHTML = `
+                    <div style="text-align: center; color: #9ca3af; padding: 30px; border: 1px dashed var(--border-gray); border-radius: 6px; margin-bottom: 16px;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">⏰</div>
+                        <div>No reminder rules configured.</div>
+                        <div style="font-size: 12px;">Survey will be sent only once.</div>
+                    </div>`;
+             }
+        }
+
+        function updateReminderRetryConfig(element) {
+            const rule = element.closest('.reminder-rule');
+            const retryCount = parseInt(rule.querySelector('.reminder-retry-count').value);
+            const retryMode = rule.querySelector('input[name^="reminderRetryMode_"]:checked').value;
+            const container = rule.querySelector('.reminder-retry-config-sections');
+            
+            container.innerHTML = '';
+            
+            // Reusable Override Panel HTML
+            const overridePanelHTML = `
+                <div class="reminder-override-panel" style="display: none; margin-top: 12px; padding: 12px; background: #f0f9ff; border: 1px dashed var(--primary); border-radius: 6px;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase;">Channel Configuration Override</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label class="compact-label" style="margin-bottom: 4px;">Platform</label>
+                            <select class="compact-select" style="width: 100%;">
+                                <option>Default Platform</option>
+                                <option>Twilio</option>
+                                <option>Genesys Cloud</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label class="compact-label" style="margin-bottom: 4px;">Specific Config</label>
+                            <select class="compact-select" style="width: 100%;">
+                                 <option>Default Template</option>
+                                 <option>Template A</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="compact-label" style="margin-bottom: 4px;">Contact Attr</label>
+                            <div style="display: flex; gap: 4px;">
+                                <input type="text" class="compact-input" value="feebak_customer_contact" disabled style="background: white; color: #6b7280;">
+                                <button class="icon-btn" onclick="enableInput(this)" style="border: 1px solid var(--border-color); border-radius: 4px;">✏️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const channelOptionsHTML = `
+                <option>Same Channel</option>
+                <option>Email</option>
+                <option>SMS</option>
+                <option>WhatsApp</option>
+                <option>Call</option>
+                <option>Custom API</option>
+                <option>Apple Business</option>
+            `;
+
+            if (retryMode === 'apply-all') {
+                // Friendly Global Sentence
+                container.innerHTML = `
+                    <div class="reminder-global-card" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white; padding: 24px;">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: var(--text-main);">
+                            <span>Wait</span>
+                            <input type="number" class="compact-input" value="3" style="width: 60px; text-align: center;">
+                            <select class="compact-select" style="width: 100px;">
+                                <option>Days</option>
+                                <option>Hours</option>
+                            </select>
+                            <span>between attempts, and send via</span>
+                            <select class="compact-select" onchange="toggleReminderChannelOverride(this)" style="width: 180px;">
+                                ${channelOptionsHTML}
+                            </select>
+                            <span>.</span>
+                        </div>
+                        ${overridePanelHTML}
+                        <div style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); background: #f0f9ff; padding: 8px 12px; border-radius: 4px; display: inline-block;">
+                            ℹ️ This schedule applies to all ${retryCount} retries.
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Interactive Timeline
+                 // Initial Node
+                 container.innerHTML += `
+                    <div style="display: flex; gap: 16px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 32px;">
+                             <div style="width: 12px; height: 12px; border-radius: 50%; background: #9ca3af; margin-top: 6px;"></div>
+                             <div style="width: 2px; flex: 1; background: var(--border-color); min-height: 20px;"></div>
+                        </div>
+                        <div style="padding-top: 2px; padding-bottom: 20px;">
+                            <span style="font-weight: 600; font-size: 13px; color: #6b7280;">Initial Survey Sent</span>
+                        </div>
+                    </div>
+                `;
+
+                for (let i = 1; i <= retryCount; i++) {
+                    const isLast = i === retryCount;
+                    container.innerHTML += `
+                        <div style="display: flex; gap: 16px;">
+                            <!-- Time Connector -->
+                            <div style="display: flex; flex-direction: column; align-items: center; width: 32px;">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: white; border: 2px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; z-index: 1;">${i}</div>
+                                ${!isLast ? '<div style="width: 2px; flex: 1; background: var(--border-color); min-height: 40px;"></div>' : ''}
+                            </div>
+                            
+                            <!-- Config Card -->
+                            <div style="flex: 1; padding-bottom: ${isLast ? '0' : '24px'};">
+                                <div class="reminder-config-card" style="border: 1px solid var(--border-color); border-radius: 6px; background: white; padding: 16px;">
+                                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px;">
+                                        <span style="font-weight: 600; color: var(--primary);">Retry #${i}</span>
+                                        <span style="color: var(--text-secondary);">— Wait</span>
+                                         <input type="number" class="compact-input" value="${i+2}" style="width: 50px; text-align: center;">
+                                         <select class="compact-select" style="width: 80px; padding: 4px;">
+                                            <option>Days</option>
+                                            <option>Hours</option>
+                                        </select>
+                                        <span style="color: var(--text-secondary);">then send via</span>
+                                        <select class="compact-select" onchange="toggleReminderChannelOverride(this)" style="width: 140px; padding: 4px;">
+                                            ${channelOptionsHTML}
+                                        </select>
+                                    </div>
+                                    ${overridePanelHTML}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function toggleScheduleOptions(select) {
+            const container = select.parentNode;
+            const delayOptions = container.querySelector('#sched_delay_options');
+            const timeOptions = container.querySelector('#sched_time_options');
+            
+            if (select.value === 'delay') {
+                if(delayOptions) delayOptions.style.display = 'block';
+                if(timeOptions) timeOptions.style.display = 'none';
+            } else if (select.value === 'specific') {
+                if(delayOptions) delayOptions.style.display = 'none';
+                if(timeOptions) timeOptions.style.display = 'block';
+            } else {
+                if(delayOptions) delayOptions.style.display = 'none';
+                if(timeOptions) timeOptions.style.display = 'none';
+            }
+        }
+
+        function checkPlatformIdReq(select, interactionChannel) {
+            const deliveryChannel = select.value;
+            const input = select.nextElementSibling;
+            
+            if (deliveryChannel !== interactionChannel) {
+                input.style.display = 'block';
+            } else {
+                input.style.display = 'none';
+            }
+        }
+
+        function enableInput(btn) {
+            const input = btn.previousElementSibling;
+            input.disabled = !input.disabled;
+            if (!input.disabled) {
+                input.focus();
+                input.style.background = 'white';
+                input.style.color = 'var(--text-main)';
+            } else {
+                 input.style.background = '#f9fafb';
+                 input.style.color = '#6b7280';
+            }
+        }
+
+        // Activation Management
+        function editActivation(id) {
+            showCreateEditView();
+            window.scrollTo(0, 0);
+        }
+
+        function duplicateActivation(id) {
+            alert('Duplicating activation #' + id);
+            // Implementation would clone the activation
+        }
+
+        function deleteActivation(id) {
+            if (confirm('Are you sure you want to delete this activation?')) {
+                alert('Deletion of activation #' + id);
+                // Implementation would delete the activation
+            }
+        }
+
+        // Save activation
+        function saveActivation() {
+            alert('Activation saved successfully!');
+            showListView();
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('surveyModal');
+            if (event.target === modal) {
+                closeSurveyModal();
+            }
+        }
+
+        // Timeline Management
+        function updateTimeline(step) {
+            document.querySelectorAll('.small-timeline-step').forEach((el, idx) => {
+                el.classList.remove('active', 'completed');
+                if (idx + 1 === step) {
+                    el.classList.add('active');
+                } else if (idx + 1 < step) {
+                    el.classList.add('completed');
+                }
+            });
+        }
+
+        // Wizard Navigation
+        function goToStep(step) {
+            // Hide all steps
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'none';
+
+            // Show current step
+            if (step === 1) {
+                document.getElementById('step1').style.display = 'block';
+            } else if (step === 2) {
+                const surveyName = document.querySelector('#surveyDisplay .survey-info h3')?.textContent;
+                if (!surveyName || surveyName === 'No Survey Selected') {
+                    alert('Please select a survey first');
+                    document.getElementById('step1').style.display = 'block';
+                    updateTimeline(1);
+                    return;
+                }
+                document.getElementById('step2').style.display = 'block';
+            } else if (step === 3) {
+                 document.getElementById('step3').style.display = 'block';
+            } else if (step === 4) {
+                document.getElementById('step4').style.display = 'block';
+                updatePreview();
+            }
+
+            updateTimeline(step);
+            window.scrollTo(0, 0);
+        }
+
+        // Preview Update
+        function updatePreview() {
+            const surveyName = document.querySelector('#surveyDisplay .survey-info h3')?.textContent || '-';
+            const conditionCount = document.querySelectorAll('#activationConditions .condition-group').length;
+            const deliveryCount = document.querySelectorAll('.delivery-config').length;
+            const remindersEnabled = document.getElementById('enableReminders')?.checked ? 'Enabled' : 'Disabled';
+
+            // Update preview display
+            let previewHTML = `
+                <div style="padding: 16px; background: var(--light-blue); border-radius: 6px; margin-bottom: 16px; border-left: 4px solid var(--primary-blue);">
+                    <h3 style="margin: 0 0 8px 0; color: var(--primary-blue); font-size: 14px;">📋 Survey Selected</h3>
+                    <p style="margin: 0; font-weight: 600;">${surveyName}</p>
+                </div>
+
+                <div style="padding: 16px; background: var(--light-blue); border-radius: 6px; margin-bottom: 16px; border-left: 4px solid var(--primary-blue);">
+                    <h3 style="margin: 0 0 8px 0; color: var(--primary-blue); font-size: 14px;">🎯 Activation Conditions</h3>
+                    <p style="margin: 0;"><strong>${conditionCount}</strong> condition group(s) configured</p>
+                </div>
+
+                <div style="padding: 16px; background: var(--light-blue); border-radius: 6px; margin-bottom: 16px; border-left: 4px solid var(--primary-blue);">
+                    <h3 style="margin: 0 0 8px 0; color: var(--primary-blue); font-size: 14px;">📨 Delivery Settings</h3>
+                    <p style="margin: 0;"><strong>${deliveryCount}</strong> delivery rule(s) configured</p>
+                </div>
+
+                <div style="padding: 16px; background: var(--light-blue); border-radius: 6px; margin-bottom: 16px; border-left: 4px solid var(--primary-blue);">
+                    <h3 style="margin: 0 0 8px 0; color: var(--primary-blue); font-size: 14px;">🔔 Reminder Settings</h3>
+                    <p style="margin: 0;">Reminders: <strong>${remindersEnabled}</strong></p>
+                </div>
+            `;
+
+            document.getElementById('previewContent').innerHTML = previewHTML;
+        }
+    </script>
+</body>
+</html>

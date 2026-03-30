@@ -1079,7 +1079,7 @@ tbody tr:hover td {
 
                     <div class="filter-group">
                         <label class="filter-label">Queue</label>
-                        <select id="queueFilter">
+                        <select id="queueFilter" onchange="togglePriorityColumn()">
                             <option value="">All Queues</option>
                             <option value="sales">Sales Queue</option>
                             <option value="support">Support Queue</option>
@@ -1118,10 +1118,9 @@ tbody tr:hover td {
                     <table class="modern-table">
                         <thead>
                             <tr style="border-bottom: 2px solid var(--border-gray);">
-                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">SURVEY & TRIGGER</th>
-                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">CHANNEL</th>
-                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">CONDITIONS</th>
-                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">PRIORITY</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">SURVEY</th>
+                                <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">QUEUE</th>
+                                <th class="priority-col" style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px; display: none;">PRIORITY</th>
                                 <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px;">STATUS</th>
                                 <th style="padding: 12px; color: #6b7280; font-weight: 600; font-size: 13px; text-align: right;">ACTIONS</th>
                             </tr>
@@ -1130,16 +1129,14 @@ tbody tr:hover td {
                             <tr onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
                                 <td style="padding: 16px 12px;">
                                     <div style="font-weight: 600; color: var(--dark-gray);">Feedback WebForm Survey</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: Queue (Sales)</div>
                                 </td>
-                                <td style="padding: 16px 12px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">📧 Email</span></td>
                                 <td style="padding: 16px 12px;">
-                                    <div style="display: flex; gap: 4px;">
-                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Queue: Sales</span>
-                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">+2 more</span>
+                                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Sales</span>
+                                        <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px; cursor: pointer;" title="Support Queue, Billing Queue">+2 more</span>
                                     </div>
                                 </td>
-                                <td style="padding: 16px 12px;"><span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P1</span></td>
+                                <td class="priority-col" style="padding: 16px 12px; display: none;"><span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P1</span></td>
                                 <td style="padding: 16px 12px;"><span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Active</span></td>
                                 <td style="padding: 16px 12px; text-align: right;">
                                     <button class="icon-btn" title="Edit">✏️</button>
@@ -1150,11 +1147,11 @@ tbody tr:hover td {
                             <tr onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
                                 <td style="padding: 16px 12px;">
                                     <div style="font-weight: 600; color: var(--dark-gray);">Voice Survey Prompt</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: Queue (Support)</div>
                                 </td>
-                                <td style="padding: 16px 12px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">☎️ Voice</span></td>
-                                <td style="padding: 16px 12px;"><span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Queue: Support</span></td>
-                                <td style="padding: 16px 12px;"><span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P2</span></td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 12px;">Support</span>
+                                </td>
+                                <td class="priority-col" style="padding: 16px 12px; display: none;"><span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P2</span></td>
                                 <td style="padding: 16px 12px;"><span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Active</span></td>
                                 <td style="padding: 16px 12px; text-align: right;">
                                     <button class="icon-btn" title="Edit">✏️</button>
@@ -1165,11 +1162,11 @@ tbody tr:hover td {
                             <tr onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
                                 <td style="padding: 16px 12px;">
                                     <div style="font-weight: 600; color: var(--dark-gray);">WhatsApp Feedback</div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Trigger: API</div>
                                 </td>
-                                <td style="padding: 16px 12px;"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">💬 WhatsApp</span></td>
-                                <td style="padding: 16px 12px;"><span style="color: #9ca3af; font-size: 12px; font-style: italic;">No conditions</span></td>
-                                <td style="padding: 16px 12px;"><span style="background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P3</span></td>
+                                <td style="padding: 16px 12px;">
+                                    <span style="color: #9ca3af; font-size: 12px; font-style: italic;">Direct</span>
+                                </td>
+                                <td class="priority-col" style="padding: 16px 12px; display: none;"><span style="background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;">P3</span></td>
                                 <td style="padding: 16px 12px;"><span style="background: #f3f4f6; color: #6b7280; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500;">Inactive</span></td>
                                 <td style="padding: 16px 12px; text-align: right;">
                                     <button class="icon-btn" title="Edit">✏️</button>
@@ -1217,26 +1214,26 @@ tbody tr:hover td {
                     <div id="triggerSection" class="card" style="margin-bottom: 0; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
                         <!-- Header -->
                         <div>
-                            <label style="font-size: 10px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Activation Triggers</label>
+                            <label style="font-size: 10px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Trigger <span style="color: var(--error-red);">*</span></label>
                         </div>
 
-                        <!-- Trigger Cards Container -->
+                        <!-- Trigger Cards Container (Single Selection - Radio Buttons) -->
                         <div style="display: flex; flex-direction: column; gap: 8px;">
-                            
+
                             <!-- Trigger Card: Queue Interaction -->
-                            <div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: white; transition: all 0.2s ease;">
+                            <div id="triggerCard_queue" style="border: 2px solid var(--primary); border-radius: 6px; padding: 10px; background: #f0f9ff; transition: all 0.2s ease;">
                                 <div style="display: flex; gap: 8px; align-items: flex-start;">
-                                    <input type="checkbox" id="trigger_queue" checked onchange="toggleQueueSelection()" style="width: 14px; height: 14px; cursor: pointer; margin-top: 2px; accent-color: var(--primary);">
+                                    <input type="radio" name="activationTrigger" id="trigger_queue" value="queue_interaction" checked onchange="handleTriggerChange()" style="width: 14px; height: 14px; cursor: pointer; margin-top: 2px; accent-color: var(--primary);">
                                     <div style="flex: 1;">
                                         <label for="trigger_queue" style="font-size: 12px; font-weight: 600; color: var(--text-main); cursor: pointer; display: block;">Queue Interaction</label>
                                         <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;">
-                                            Trigger surveys based on specific ACD queue events and agent interactions.
+                                            Interactions occur within a queue.
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Queue Selector (Conditional) -->
+                                <!-- Queue Selector (Conditional - shown when Queue Interaction is selected) -->
                                 <div id="queueSelection" style="display: block; margin-top: 8px; padding-left: 22px;">
-                                    <div class="multi-select-container" onclick="toggleMultiSelectDropdown(event)" style="padding: 4px 8px; font-size: 11px; border: 1px solid var(--border-color); border-radius: 4px; background: #f9fafb; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: space-between;">
+                                    <div class="multi-select-container" onclick="toggleMultiSelectDropdown(event)" style="padding: 4px 8px; font-size: 11px; border: 1px solid var(--border-color); border-radius: 4px; background: white; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: space-between;">
                                         <input type="text" class="multi-select-search" placeholder="Select queues..." readonly style="font-size: 11px; border: none; padding: 0; width: 100%; cursor: pointer; background: transparent;">
                                         <span style="font-size: 9px; color: var(--text-secondary);">▼</span>
                                         <div class="multi-select-dropdown" id="queueDropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); z-index: 10; border-radius: 4px; margin-top: 4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
@@ -1248,40 +1245,16 @@ tbody tr:hover td {
                                 </div>
                             </div>
 
-                            <!-- Advanced Triggers Toggle -->
-                            <div style="margin-top: 4px;">
-                                <button class="btn-text" onclick="toggleAdvancedTriggers()" style="font-size: 11px; font-weight: 600; color: var(--primary); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;">
-                                    <span id="advTriggerArrow">➤</span> Advanced Triggers
-                                </button>
-                                
-                                <div id="advancedTriggersPanel" style="display: none; margin-top: 8px; flex-direction: column; gap: 8px;">
-                                    
-                                    <!-- Trigger Card: Non-ACD Interaction -->
-                                    <div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: white;">
-                                        <div style="display: flex; gap: 8px; align-items: flex-start;">
-                                            <input type="checkbox" id="trigger_non_acd" style="width: 14px; height: 14px; cursor: pointer; margin-top: 2px; accent-color: var(--primary);">
-                                            <div style="flex: 1;">
-                                                <label for="trigger_non_acd" style="font-size: 12px; font-weight: 600; color: var(--text-main); cursor: pointer; display: block;">Non-ACD Interaction</label>
-                                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;">
-                                                    Handle direct calls or interactions that do not pass through a queue.
-                                                </div>
-                                            </div>
+                            <!-- Trigger Card: Direct Interaction -->
+                            <div id="triggerCard_direct" style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: white; transition: all 0.2s ease;">
+                                <div style="display: flex; gap: 8px; align-items: flex-start;">
+                                    <input type="radio" name="activationTrigger" id="trigger_direct" value="direct_interaction" onchange="handleTriggerChange()" style="width: 14px; height: 14px; cursor: pointer; margin-top: 2px; accent-color: var(--primary);">
+                                    <div style="flex: 1;">
+                                        <label for="trigger_direct" style="font-size: 12px; font-weight: 600; color: var(--text-main); cursor: pointer; display: block;">Direct Interaction</label>
+                                        <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;">
+                                            Interactions not associated with a queue.
                                         </div>
                                     </div>
-
-                                    <!-- Trigger Card: External API Trigger -->
-                                    <div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; background: white;">
-                                        <div style="display: flex; gap: 8px; align-items: flex-start;">
-                                            <input type="checkbox" id="trigger_api" style="width: 14px; height: 14px; cursor: pointer; margin-top: 2px; accent-color: var(--primary);">
-                                            <div style="flex: 1;">
-                                                <label for="trigger_api" style="font-size: 12px; font-weight: 600; color: var(--text-main); cursor: pointer; display: block;">External API Trigger</label>
-                                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;">
-                                                    Initiate Activation Using Feebak Survey API's
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
 
@@ -1313,162 +1286,167 @@ tbody tr:hover td {
                                         </div>
                                     </div>
 
+                                    <!-- Rule Conditions -->
                                     <div style="padding: 12px; background: white; border-bottom: 1px solid var(--border-color);">
-                                        <div style="display: flex; gap: 16px;">
-                                            <!-- Conditions -->
-                                            <div style="flex: 1; border-right: 1px solid var(--border-color); padding-right: 16px;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                                    <label class="compact-label" style="font-size: 11px; color: var(--text-main);">Rule Conditions</label>
-                                                </div>
-                                                
-                                                <!-- Survey Consent Check -->
-                                                <div style="margin-bottom: 8px; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden;">
-                                                    <div style="background: #f9fafb; padding: 6px 8px; display: flex; align-items: center; gap: 6px;">
-                                                        <input type="checkbox" id="sc_check_deliveryRule1" onchange="toggleSurveyConsent(this, 'deliveryRule1')" style="cursor: pointer; accent-color: var(--primary);">
-                                                        <label for="sc_check_deliveryRule1" style="font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; user-select: none;">
-                                                            Add Survey Consent Check Using Participant Data
-                                                        </label>
-                                                    </div>
-                                                    <div id="sc_inputs_deliveryRule1" style="display: none; padding: 8px; background: white; border-top: 1px solid #e5e7eb;">
-                                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                                            <div>
-                                                                <label style="display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 2px;">Data Key Attribute</label>
-                                                                <input type="text" class="compact-input sc-key" value="survey_consent" style="width: 100%; font-size: 11px; padding: 4px;">
-                                                            </div>
-                                                            <div>
-                                                                <label style="display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 2px;">Required Value</label>
-                                                                <select class="compact-select sc-val" style="width: 100%; font-size: 11px; padding: 4px;">
-                                                                    <option value="true">True</option>
-                                                                    <option value="false">False</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div style="margin-top: 6px; font-size: 10px; color: var(--text-muted); font-style: italic;">
-                                                            Only interactions where participant data with <b>Key</b> equals <b>Value</b> will trigger this rule.
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                            <label class="compact-label" style="font-size: 11px; color: var(--text-main);">Rule Conditions</label>
+                                        </div>
 
-                                                <!-- Summary View to show added rules -->
-                                                <div id="conditionSummary_deliveryRule1" style="display: none; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; margin-bottom: 6px; min-height: 28px;">
-                                                    <!-- Empty states removed/hidden by default -->
-                                                    <div class="empty-state" style="display: none; font-size: 10px; color: var(--text-secondary); font-style: italic;">No specific conditions configured.</div>
-                                                    <div class="empty-state-sub" style="display: none; font-size: 9px; color: var(--text-muted); margin-top: 2px;">Rule applies to all interactions.</div>
-                                                    <div class="conditions-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
-                                                </div>
-
-                                                <!-- Trigger Button -->
-                                                <button class="btn btn-secondary" onclick="openConditionModal('deliveryRule1')" style="width: 100%; justify-content: center; border: 1px dashed var(--border-color); font-size: 10px; color: var(--primary); padding: 4px;">
-                                                    + Add / Edit Other Conditions
-                                                </button>
+                                        <!-- Survey Consent Check -->
+                                        <div style="margin-bottom: 8px; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden;">
+                                            <div style="background: #f9fafb; padding: 6px 8px; display: flex; align-items: center; gap: 6px;">
+                                                <input type="checkbox" id="sc_check_deliveryRule1" onchange="toggleSurveyConsent(this, 'deliveryRule1')" style="cursor: pointer; accent-color: var(--primary);">
+                                                <label for="sc_check_deliveryRule1" style="font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; user-select: none;">
+                                                    Survey Consent via Participant Data
+                                                </label>
                                             </div>
-
-                                            <!-- Schedule -->
-                                            <div style="flex: 1;">
-                                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                                                    <label class="compact-label" style="font-size: 11px; color: var(--text-main); margin: 0;">Schedule Delivery</label>
-                                                    <select class="compact-select" onchange="toggleScheduleOptions(this)" style="width: 110px; font-size: 10px; padding: 2px;">
-                                                        <option value="immediate">Immediate</option>
-                                                        <option value="delay">After Delay</option>
-                                                        <option value="specific">Time Frame</option>
-                                                    </select>
-                                                </div>
-                                                
-                                                <div class="sched-delay-options" style="display: none; padding: 6px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);">
-                                                    <div style="display: flex; align-items: center; gap: 4px;">
-                                                        <span style="font-size: 10px; color: var(--text-secondary);">Send after</span>
-                                                        <input type="number" class="compact-input" style="width: 40px; font-size: 10px;" placeholder="30">
-                                                        <select class="compact-select" style="width: 70px; font-size: 10px;">
-                                                            <option value="minutes">Minutes</option>
-                                                            <option value="hours">Hours</option>
-                                                            <option value="days">Days</option>
+                                            <div id="sc_inputs_deliveryRule1" style="display: none; padding: 8px; background: white; border-top: 1px solid #e5e7eb;">
+                                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                                    <div>
+                                                        <label style="display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 2px;">Data Key Attribute</label>
+                                                        <input type="text" class="compact-input sc-key" value="offerFeebakSurvey" style="width: 100%; font-size: 11px; padding: 4px;">
+                                                    </div>
+                                                    <div>
+                                                        <label style="display: block; font-size: 10px; color: var(--text-secondary); margin-bottom: 2px;">Required Value</label>
+                                                        <select class="compact-select sc-val" style="width: 100%; font-size: 11px; padding: 4px;">
+                                                            <option value="true">True</option>
+                                                            <option value="false">False</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="sched-time-options" style="display: none; padding: 6px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);">
-                                                    <div style="margin-bottom: 4px;">
-                                                        <label class="compact-label" style="margin-bottom: 2px; font-size: 10px;">Day Range</label>
-                                                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; align-items: center;">
-                                                            <select class="compact-select" style="font-size: 10px;"><option value="">Start</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option></select>
-                                                            <span style="font-size: 9px; color: var(--text-secondary);">to</span>
-                                                            <select class="compact-select" style="font-size: 10px;"><option value="">End</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option></select>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <label class="compact-label" style="margin-bottom: 2px; font-size: 10px;">Time Range</label>
-                                                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; align-items: center;">
-                                                            <input type="time" class="compact-input" style="font-size: 10px; padding: 2px;">
-                                                            <span style="font-size: 9px; color: var(--text-secondary);">to</span>
-                                                            <input type="time" class="compact-input" style="font-size: 10px; padding: 2px;">
-                                                        </div>
-                                                    </div>
+                                                <div style="margin-top: 6px; font-size: 10px; color: var(--text-muted); font-style: italic;">
+                                                    Only interactions where participant data with <b>Key</b> equals <b>Value</b> will trigger this rule.
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Summary View to show added rules -->
+                                        <div id="conditionSummary_deliveryRule1" style="display: none; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; margin-bottom: 6px; min-height: 28px;">
+                                            <div class="empty-state" style="display: none; font-size: 10px; color: var(--text-secondary); font-style: italic;">No specific conditions configured.</div>
+                                            <div class="empty-state-sub" style="display: none; font-size: 9px; color: var(--text-muted); margin-top: 2px;">Rule applies to all interactions.</div>
+                                            <div class="conditions-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
+                                        </div>
+
+                                        <!-- Trigger Button -->
+                                        <button class="btn btn-secondary" onclick="openConditionModal('deliveryRule1')" style="width: 100%; justify-content: center; border: 1px dashed var(--border-color); font-size: 10px; color: var(--primary); padding: 4px;">
+                                            + Add / Edit Other Conditions
+                                        </button>
                                     </div>
 
-                                    <!-- Channel Mappings -->
+                                    <!-- Channel Mappings with Schedule & Contact Attribute -->
                                     <div class="channel-mappings-container" style="padding: 0;">
                                         <div class="channel-grid-header" style="display: flex; align-items: center; padding: 6px 12px; background: #f8fafc; border-bottom: 1px solid var(--border-color); font-size: 11px; white-space: nowrap;">
                                             <div style="width: 24px;"></div>
-                                            <div class="compact-label" style="font-size: 10px; width: 155px;">Interaction Channel</div>
+                                            <div class="compact-label" style="font-size: 10px; width: 100px;">Survey Channel</div>
                                             <div style="width: 20px;"></div>
-                                            <div class="compact-label" style="flex: 2; font-size: 10px;">Survey Delivery Channel</div>
+                                            <div class="compact-label" style="font-size: 10px; flex: 1;">Delivery Channel</div>
+                                            <div class="compact-label" style="font-size: 10px; flex: 1;">Contact Attribute</div>
+                                            <div class="compact-label" style="font-size: 10px; flex: 1;">Schedule</div>
+                                            <div style="width: 8rem;"></div>
                                         </div>
 
                                         <!-- Email Row -->
-                                        <div class="channel-row-wrapper" style="padding: 6px 12px;">
-                                            <div class="channel-row" style="display: flex; align-items: center;">
+                                        <div class="channel-row-wrapper" style="padding: 6px 12px; border-bottom: 1px solid var(--border-color);">
+                                            <div class="channel-row" style="display: flex; align-items: center; gap: 4px;">
                                                 <div class="channel-icon-emoji" style="font-size: 12px; width: 24px;">📧</div>
-                                                <div class="channel-name" style="font-size: 11px; width: 80px;">Email</div>
+                                                <div class="channel-name" style="font-size: 11px; width: 100px;">Email</div>
                                                 <div class="arrow-separator" style="font-size: 10px; width: 20px;">➝</div>
-                                                <div style="flex: 2; display: flex; gap: 6px;  max-width: 20rem">
-                                                    <select class="compact-select" style="flex: 1; font-size: 11px;" onchange="checkPlatformIdReq(this, 'Email')">
-                                                        <option value="Email">Email</option><option value="WhatsApp">WhatsApp</option><option value="SMS">SMS</option><option value="Call">Call</option><option value="Custom API">Custom API</option><option value="Apple Business">Apple Business</option>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select delivery-channel-select" style="width: 100%; font-size: 11px;" data-default="Email" onchange="onDeliveryChannelChange(this)">
+                                                        <option value="Email">Email</option><option value="WhatsApp">WhatsApp</option><option value="SMS">SMS</option><option value="Call">Call</option><option value="Custom API">Custom API</option>
                                                     </select>
-                                                    <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1; font-size: 11px;">
                                                 </div>
-                                                <div style="width: 10rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override template configured in survey</button></div>
+                                                <div style="flex: 1;">
+                                                    <div class="contact-attr-field" style="display: none;">
+                                                        <input type="text" class="compact-input" value="feebak_customer_contact_email" style="width: 100%; font-size: 10px; padding: 4px;">
+                                                    </div>
+                                                    <span class="contact-attr-default" style="font-size: 10px; color: var(--text-secondary); font-style: italic;">Default (same channel)</span>
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select sched-select" onchange="toggleChannelSchedule(this)" style="width: 100%; font-size: 10px;">
+                                                        <option value="immediate">Immediate</option>
+                                                        <option value="delay">After Delay</option>
+                                                        <option value="timeframe">Time Frame</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width: 8rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override Template</button></div>
                                             </div>
+                                            <div class="channel-schedule-panel" style="display: none; margin-top: 6px; padding: 6px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);"></div>
                                             <div class="override-panel" style="display: none;">
                                                 <div style="display: flex; gap: 12px; margin-top: 6px;">
                                                     <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Platform</label><select class="compact-select" style="font-size: 10px;"><option>Select Platform</option><option>Twilio</option><option>Genesys Cloud</option></select></div>
-                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Specific Config</label><select class="compact-select" style="font-size: 10px;"><option>Default Survey Config</option><option>Marketing Template A</option><option>Support Template B</option></select></div>
-                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Contact Attribute Key</label><div style="display: flex; gap: 4px;"><input type="text" class="compact-input" value="feebak_customer_contact" disabled style="background: #f9fafb; color: #6b7280; font-size: 10px;"><button class="icon-btn" onclick="enableInput(this)" style="border: 1px solid var(--border-color); border-radius: 4px; padding: 1px 4px; font-size: 9px; width: 20px; height: 20px;">✏️</button></div></div>
+                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Template</label><select class="compact-select" style="font-size: 10px;"><option>Default Survey Config</option><option>Marketing Template A</option><option>Support Template B</option></select></div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Voice Row -->
-                                        <div class="channel-row-wrapper" style="padding: 6px 12px;">
-                                            <div class="channel-row" style="display: flex; align-items: center;">
+                                        <div class="channel-row-wrapper" style="padding: 6px 12px; border-bottom: 1px solid var(--border-color);">
+                                            <div class="channel-row" style="display: flex; align-items: center; gap: 4px;">
                                                 <div class="channel-icon-emoji" style="font-size: 12px; width: 24px;">☎️</div>
-                                                <div class="channel-name" style="font-size: 11px; width: 80px;">Voice</div>
+                                                <div class="channel-name" style="font-size: 11px; width: 100px;">Voice</div>
                                                 <div class="arrow-separator" style="font-size: 10px; width: 20px;">➝</div>
-                                                <div style="flex: 2; display: flex; gap: 6px;  max-width: 20rem">
-                                                    <select class="compact-select" style="flex: 1; font-size: 11px;" onchange="checkPlatformIdReq(this, 'Call')">
-                                                        <option value="Call">Call</option><option value="WhatsApp">WhatsApp</option><option value="SMS">SMS</option><option value="Email">Email</option><option value="Custom API">Custom API</option><option value="Apple Business">Apple Business</option>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select delivery-channel-select" style="width: 100%; font-size: 11px;" data-default="Call" onchange="onDeliveryChannelChange(this)">
+                                                        <option value="Call" selected>Call</option><option value="WhatsApp">WhatsApp</option><option value="SMS">SMS</option><option value="Email">Email</option><option value="Custom API">Custom API</option>
                                                     </select>
-                                                    <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1; font-size: 11px;">
                                                 </div>
-                                                <div style="width: 10rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override template configured in survey</button></div>
+                                                <div style="flex: 1;">
+                                                    <div class="contact-attr-field" style="display: none;">
+                                                        <input type="text" class="compact-input" value="feebak_customer_contact_call" style="width: 100%; font-size: 10px; padding: 4px;">
+                                                    </div>
+                                                    <span class="contact-attr-default" style="font-size: 10px; color: var(--text-secondary); font-style: italic;">Default (same channel)</span>
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select sched-select" onchange="toggleChannelSchedule(this)" style="width: 100%; font-size: 10px;">
+                                                        <option value="immediate">Immediate</option>
+                                                        <option value="delay">After Delay</option>
+                                                        <option value="timeframe">Time Frame</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width: 8rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override Template</button></div>
                                             </div>
-                                            <div class="override-panel" style="display: none;"><div class="alert alert-info" style="padding: 4px; font-size: 9px; margin-bottom: 0; margin-top: 6px;">No overrides configured. Inheriting global rule settings.</div></div>
+                                            <div class="channel-schedule-panel" style="display: none; margin-top: 6px; padding: 6px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);"></div>
+                                            <div class="override-panel" style="display: none;">
+                                                <div style="display: flex; gap: 12px; margin-top: 6px;">
+                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Platform</label><select class="compact-select" style="font-size: 10px;"><option>Select Platform</option><option>Twilio</option><option>Genesys Cloud</option></select></div>
+                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Template</label><select class="compact-select" style="font-size: 10px;"><option>Default Survey Config</option><option>Marketing Template A</option><option>Support Template B</option></select></div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <!-- SMS Row -->
                                         <div class="channel-row-wrapper" style="padding: 6px 12px;">
-                                            <div class="channel-row" style="display: flex; align-items: center;">
+                                            <div class="channel-row" style="display: flex; align-items: center; gap: 4px;">
                                                 <div class="channel-icon-emoji" style="font-size: 12px; width: 24px;">📱</div>
-                                                <div class="channel-name" style="font-size: 11px; width: 80px;">SMS</div>
+                                                <div class="channel-name" style="font-size: 11px; width: 100px;">SMS</div>
                                                 <div class="arrow-separator" style="font-size: 10px; width: 20px;">➝</div>
-                                                <div style="flex: 2; display: flex; gap: 6px;  max-width: 20rem">
-                                                    <select class="compact-select" style="flex: 1; font-size: 11px;" onchange="checkPlatformIdReq(this, 'SMS')">
-                                                        <option value="SMS">SMS</option><option value="WhatsApp">WhatsApp</option><option value="Call">Call</option><option value="Email">Email</option><option value="Custom API">Custom API</option><option value="Apple Business">Apple Business</option>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select delivery-channel-select" style="width: 100%; font-size: 11px;" data-default="SMS" onchange="onDeliveryChannelChange(this)">
+                                                        <option value="SMS">SMS</option><option value="WhatsApp">WhatsApp</option><option value="Call">Call</option><option value="Email">Email</option><option value="Custom API">Custom API</option>
                                                     </select>
-                                                    <input type="text" class="compact-input platform-id-input" placeholder="Platform ID" style="display: none; flex: 1; font-size: 11px;">
                                                 </div>
-                                                <div style="width: 10rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override template configured in survey</button></div>
+                                                <div style="flex: 1;">
+                                                    <div class="contact-attr-field" style="display: none;">
+                                                        <input type="text" class="compact-input" value="feebak_customer_contact_sms" style="width: 100%; font-size: 10px; padding: 4px;">
+                                                    </div>
+                                                    <span class="contact-attr-default" style="font-size: 10px; color: var(--text-secondary); font-style: italic;">Default (same channel)</span>
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <select class="compact-select sched-select" onchange="toggleChannelSchedule(this)" style="width: 100%; font-size: 10px;">
+                                                        <option value="immediate">Immediate</option>
+                                                        <option value="delay">After Delay</option>
+                                                        <option value="timeframe">Time Frame</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width: 8rem;"><button class="btn-override" onclick="toggleOverride(this)" style="width: 100%; font-size: 9px; padding: 2px 4px;">⚙️ Override Template</button></div>
+                                            </div>
+                                            <div class="channel-schedule-panel" style="display: none; margin-top: 6px; padding: 6px; background: var(--bg-body); border-radius: 6px; border: 1px solid var(--border-color);"></div>
+                                            <div class="override-panel" style="display: none;">
+                                                <div style="display: flex; gap: 12px; margin-top: 6px;">
+                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Platform</label><select class="compact-select" style="font-size: 10px;"><option>Select Platform</option><option>Twilio</option><option>Genesys Cloud</option></select></div>
+                                                    <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Template</label><select class="compact-select" style="font-size: 10px;"><option>Default Survey Config</option><option>Marketing Template A</option><option>Support Template B</option></select></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1586,17 +1564,15 @@ tbody tr:hover td {
                     <div style="display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap;">
                         <select id="modalConditionType" class="compact-select" onchange="updateModalConditionInputs(this)" style="width: 200px;">
                             <option value="">Select Condition Type...</option>
-                            <option value="participant_data">Participant Data</option>
-                            <option value="custom_attributes">Custom Attributes</option>
+                            <option value="participant_data">Customer Participant Data</option>
+                            <option value="custom_attributes">Feebak Custom Attributes</option>
                             <option value="queue_priority">Queue Priority</option>
                             <option value="queue_waiting_time">Queue Waiting Time</option>
                             <option value="interaction_handle_time">Interaction Handle Time</option>
                             <option value="user">User</option>
-                            <option value="wrap_up_code">Wrap-up Code</option>
                             <option value="direction">Direction</option>
                             <option value="interaction_duration">Interaction Duration</option>
                             <option value="transfer_count">Transfer Count</option>
-                            <option value="customer_segment">Customer Segment</option>
                         </select>
                         <div id="modalConditionInputs" style="flex: 1; display: flex; gap: 8px; min-width: 200px;">
                             <!-- Dynamic inputs -->
@@ -1642,6 +1618,15 @@ tbody tr:hover td {
         function resetFilters() {
             document.getElementById('queueFilter').value = '';
             document.getElementById('surveyFilter').value = '';
+            togglePriorityColumn();
+        }
+
+        function togglePriorityColumn() {
+            const queueFilter = document.getElementById('queueFilter');
+            const show = queueFilter && queueFilter.value !== '';
+            document.querySelectorAll('.priority-col').forEach(el => {
+                el.style.display = show ? 'table-cell' : 'none';
+            });
         }
 
         // ─── Survey Selection ─────────────────────────────────────────────────────
@@ -1665,23 +1650,25 @@ tbody tr:hover td {
 
         // ─── Trigger Logic ────────────────────────────────────────────────────────
 
-        function toggleAdvancedTriggers() {
-            const panel = document.getElementById('advancedTriggersPanel');
-            const arrow = document.getElementById('advTriggerArrow');
-            if (panel.style.display === 'none') {
-                panel.style.display = 'flex'; // Changed to flex to match the new layout
-                arrow.textContent = '▼';
-            } else {
-                panel.style.display = 'none';
-                arrow.textContent = '➤';
-            }
-        }
+        function handleTriggerChange() {
+            const triggerQueue = document.getElementById('trigger_queue');
+            const triggerDirect = document.getElementById('trigger_direct');
+            const queueSelection = document.getElementById('queueSelection');
+            const cardQueue = document.getElementById('triggerCard_queue');
+            const cardDirect = document.getElementById('triggerCard_direct');
 
-        function toggleQueueSelection() {
-            const checkbox = document.getElementById('trigger_queue');
-            const selection = document.getElementById('queueSelection');
-            if (checkbox && selection) {
-                selection.style.display = checkbox.checked ? 'block' : 'none';
+            if (triggerQueue.checked) {
+                queueSelection.style.display = 'block';
+                cardQueue.style.border = '2px solid var(--primary)';
+                cardQueue.style.background = '#f0f9ff';
+                cardDirect.style.border = '1px solid var(--border-color)';
+                cardDirect.style.background = 'white';
+            } else {
+                queueSelection.style.display = 'none';
+                cardQueue.style.border = '1px solid var(--border-color)';
+                cardQueue.style.background = 'white';
+                cardDirect.style.border = '2px solid var(--primary)';
+                cardDirect.style.background = '#f0f9ff';
             }
         }
 
@@ -1732,17 +1719,15 @@ tbody tr:hover td {
         // ─── Condition Modal Logic ───────────────────────────────────────────────
 
         const DELIVERY_CONDITION_TYPES = {
-            'participant_data':        { label: 'Participant Data',         type: 'kv' },
-            'custom_attributes':       { label: 'Custom Attributes',        type: 'kv' },
+            'participant_data':        { label: 'Customer Participant Data', type: 'kv' },
+            'custom_attributes':       { label: 'Feebak Custom Attributes', type: 'kv' },
             'queue_priority':          { label: 'Queue Priority',           type: 'number' },
             'queue_waiting_time':      { label: 'Queue Waiting Time',       type: 'number' },
             'interaction_handle_time': { label: 'Interaction Handle Time',  type: 'number' },
             'user':                    { label: 'User',                     type: 'multi',  options: ['Agent 1', 'Agent 2', 'Support Team', 'Sales Team'] },
-            'wrap_up_code':            { label: 'Wrap-up Code',             type: 'select', options: ['Solved', 'Unresolved', 'Escalated', 'Sale Made'] },
-            'direction':               { label: 'Direction',                type: 'select', options: ['Inbound', 'Inbound Internal', 'Outbound'] },
+            'direction':               { label: 'Direction',                type: 'select', options: ['Inbound', 'Outbound'] },
             'interaction_duration':    { label: 'Interaction Duration',     type: 'number' },
             'transfer_count':          { label: 'Transfer Count',           type: 'number' },
-            'customer_segment':        { label: 'Customer Segment',         type: 'select', options: ['VIP', 'Standard', 'At Risk'] },
             'survey_consent':          { label: 'Survey Consent (Template)', type: 'template' }
         };
 
@@ -1790,7 +1775,7 @@ tbody tr:hover td {
                 html = `
                     <div style="display: flex; gap: 8px; align-items: center; border: 1px dashed var(--primary); padding: 4px 8px; border-radius: 4px; background: #f0f9ff;">
                         <span style="font-size: 10px; color: var(--text-secondary);">Participant Data Key:</span>
-                        <input type="text" class="compact-input" value="survey_consent" style="width: 90px; font-weight: 500;">
+                        <input type="text" class="compact-input" value="offerFeebakSurvey" style="width: 90px; font-weight: 500;">
                         <span style="font-size: 10px; color: var(--text-secondary);">Value:</span>
                         <select class="compact-select" style="width: 60px;">
                             <option value="true">True</option>
@@ -2017,22 +2002,69 @@ tbody tr:hover td {
             if (!panel) return;
             const isActive = btn.classList.contains('active');
             panel.style.display = isActive ? 'block' : 'none';
-            btn.innerHTML = isActive ? '⚙️ Hide Overrides' : '⚙️ Override Default Delivery Channel Config';
+            btn.innerHTML = isActive ? '⚙️ Hide Override' : '⚙️ Override Template';
         }
 
-        function toggleScheduleOptions(select) {
-            // Navigate to the column container (grandparent)
-            const container = select.parentNode.parentNode;
-            const delay = container.querySelector('.sched-delay-options');
-            const time  = container.querySelector('.sched-time-options');
-            
-            if (delay) delay.style.display = select.value === 'delay'    ? 'block' : 'none';
-            if (time)  time.style.display  = select.value === 'specific' ? 'block' : 'none';
+        // ─── Channel-Level Delivery Config ──────────────────────────────────────
+
+        function onDeliveryChannelChange(select) {
+            const wrapper = select.closest('.channel-row-wrapper');
+            const defaultChannel = select.getAttribute('data-default');
+            const contactField = wrapper.querySelector('.contact-attr-field');
+            const contactDefault = wrapper.querySelector('.contact-attr-default');
+            const contactInput = contactField ? contactField.querySelector('input') : null;
+
+            if (select.value !== defaultChannel) {
+                // Show contact attribute input when delivery channel differs from survey channel
+                if (contactField) contactField.style.display = 'block';
+                if (contactDefault) contactDefault.style.display = 'none';
+                if (contactInput) contactInput.value = `feebak_customer_contact_${select.value.toLowerCase().replace(/\s+/g, '_')}`;
+            } else {
+                if (contactField) contactField.style.display = 'none';
+                if (contactDefault) contactDefault.style.display = 'inline';
+            }
         }
 
-        function checkPlatformIdReq(select, interactionChannel) {
-            const input = select.nextElementSibling;
-            if (input) input.style.display = select.value !== interactionChannel ? 'block' : 'none';
+        function toggleChannelSchedule(select) {
+            const wrapper = select.closest('.channel-row-wrapper');
+            const panel = wrapper.querySelector('.channel-schedule-panel');
+            if (!panel) return;
+
+            if (select.value === 'immediate') {
+                panel.style.display = 'none';
+                panel.innerHTML = '';
+            } else if (select.value === 'delay') {
+                panel.style.display = 'block';
+                panel.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-size: 10px; color: var(--text-secondary);">Send after</span>
+                        <input type="number" class="compact-input" style="width: 40px; font-size: 10px;" placeholder="30">
+                        <select class="compact-select" style="width: 70px; font-size: 10px;">
+                            <option value="minutes">Minutes</option>
+                            <option value="hours">Hours</option>
+                            <option value="days">Days</option>
+                        </select>
+                    </div>`;
+            } else if (select.value === 'timeframe') {
+                panel.style.display = 'block';
+                panel.innerHTML = `
+                    <div style="margin-bottom: 4px;">
+                        <label class="compact-label" style="margin-bottom: 2px; font-size: 10px;">Day Range</label>
+                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; align-items: center;">
+                            <select class="compact-select" style="font-size: 10px;"><option value="">Start</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select>
+                            <span style="font-size: 9px; color: var(--text-secondary);">to</span>
+                            <select class="compact-select" style="font-size: 10px;"><option value="">End</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="compact-label" style="margin-bottom: 2px; font-size: 10px;">Time Range</label>
+                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; align-items: center;">
+                            <input type="time" class="compact-input" style="font-size: 10px; padding: 2px;">
+                            <span style="font-size: 9px; color: var(--text-secondary);">to</span>
+                            <input type="time" class="compact-input" style="font-size: 10px; padding: 2px;">
+                        </div>
+                    </div>`;
+            }
         }
 
         function enableInput(btn) {
@@ -2173,7 +2205,7 @@ tbody tr:hover td {
                     <div style="display: flex; gap: 12px;">
                         <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Platform</label><select class="compact-select" style="font-size: 10px;"><option>Select Platform</option><option>Twilio</option><option>Genesys Cloud</option></select></div>
                         <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Specific Config</label><select class="compact-select" style="font-size: 10px;"><option>Default Survey Config</option><option>Marketing Template A</option><option>Support Template B</option></select></div>
-                        <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Contact Attribute Key</label><div style="display: flex; gap: 4px;"><input type="text" class="compact-input" value="feebak_customer_contact" disabled style="background: #f9fafb; color: #6b7280; font-size: 10px;"><button class="icon-btn" onclick="enableInput(this)" style="border: 1px solid var(--border-color); border-radius: 4px; padding: 1px 4px; font-size: 9px; width: 20px; height: 20px;">✏️</button></div></div>
+                        <div style="flex: 1;"><label class="compact-label" style="margin-bottom: 2px; font-size: 9px;">Contact Attribute Key</label><div style="display: flex; gap: 4px;"><input type="text" class="compact-input" value="feebak_customer_contact_[channel]" disabled style="background: #f9fafb; color: #6b7280; font-size: 10px;"><button class="icon-btn" onclick="enableInput(this)" style="border: 1px solid var(--border-color); border-radius: 4px; padding: 1px 4px; font-size: 9px; width: 20px; height: 20px;">✏️</button></div></div>
                     </div>
                 </div>`;
 
@@ -2270,33 +2302,33 @@ tbody tr:hover td {
             const container = document.getElementById('summaryContent');
             let html = '';
 
-            // 1. Survey & Triggers
+            // 1. Survey & Trigger
             const surveyName = document.getElementById('surveyDisplay').textContent.trim();
-            const triggers = [];
-            if (document.getElementById('trigger_queue').checked) {
+            const selectedTrigger = document.querySelector('input[name="activationTrigger"]:checked');
+            let triggerDisplay = '';
+            let queues = [];
+
+            if (selectedTrigger && selectedTrigger.value === 'queue_interaction') {
                 const qInputs = document.querySelectorAll('#queueSelection input[type="checkbox"]:checked');
-                const queues = Array.from(qInputs).map(cb => cb.parentElement.textContent.trim());
-                triggers.push(`Queue Interaction (${queues.length ? queues.join(', ') : 'All Queues'})`);
+                queues = Array.from(qInputs).map(cb => cb.parentElement.textContent.trim());
+                triggerDisplay = `Queue Interaction (${queues.length ? queues.join(', ') : 'All Queues'})`;
+            } else {
+                triggerDisplay = 'Direct Interaction';
             }
-            if (document.getElementById('trigger_non_acd') && document.getElementById('trigger_non_acd').checked) triggers.push('Non-ACD Interaction');
-            if (document.getElementById('trigger_api') && document.getElementById('trigger_api').checked) triggers.push('External API Trigger');
 
             html += `
             <div style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px;">
-                <h3 style="font-size: 13px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px;">📋 Survey & Triggers</h3>
+                <h3 style="font-size: 13px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px;">📋 Survey & Trigger</h3>
                 <div style="display: grid; grid-template-columns: 120px 1fr; gap: 8px; font-size: 12px;">
                     <div style="color: var(--text-secondary);">Target Survey:</div>
                     <div style="font-weight: 600;">${surveyName}</div>
-                    <div style="color: var(--text-secondary);">Triggers:</div>
-                    <div>${triggers.map(t => `<div style="margin-bottom:2px;">• ${t}</div>`).join('') || '<span style="color:var(--text-muted);">No triggers selected</span>'}</div>
+                    <div style="color: var(--text-secondary);">Trigger:</div>
+                    <div style="font-weight: 500;">${triggerDisplay}</div>
                 </div>`;
 
-            // Subscribe Queues Option
-            if (document.getElementById('trigger_queue').checked) {
-                const qInputs = document.querySelectorAll('#queueSelection input[type="checkbox"]:checked');
-                const queues = Array.from(qInputs).map(cb => cb.parentElement.textContent.trim());
-                if (queues.length > 0) {
-                     html += `
+            // Subscribe Queues Option (only for Queue Interaction trigger)
+            if (selectedTrigger && selectedTrigger.value === 'queue_interaction' && queues.length > 0) {
+                html += `
                     <div style="margin-top: 12px; padding: 10px; background: #f0f9ff; border: 1px dashed var(--primary); border-radius: 6px; display: flex; align-items: start; gap: 8px;">
                         <input type="checkbox" id="subscribeQueuesCheck" checked style="margin-top: 2px; cursor: pointer;">
                         <div>
@@ -2304,9 +2336,8 @@ tbody tr:hover td {
                             <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Queues: ${queues.join(', ')}</div>
                         </div>
                     </div>`;
-                }
             }
-            
+
             html += `</div>`;
 
             // 2. Delivery Rules
@@ -2394,7 +2425,7 @@ tbody tr:hover td {
 
         // Initialize state
         document.addEventListener('DOMContentLoaded', function() {
-            toggleQueueSelection();
+            handleTriggerChange();
         });
     </script>
 </body>
